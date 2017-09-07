@@ -25,12 +25,15 @@ public class User implements Serializable {
   private Integer tranId;// 自动生成序列号
   private String id; // 唯一标示ID
   @Length(min = 1, max = 32, message = "用户名最小为1位，最大为32位!")
+  @NotBlank(message = "用户名不能为空!")
   private String name;// 用户名
   @Length(max = 8, message = "昵称最大为8位!")
   private String shortName;// 昵称
   @Length(min = 11, max = 11, message = "手机号不正确!")
+  @NotBlank(message = "手机号不能为空!")
   private String mobile;// 手机号
-  @Email(message = "邮箱输入不正确!")
+  @Email(message = "邮箱校验不正确!")
+  @NotBlank(message = "邮箱不能为空!")
   private String email;// 邮箱
   @Length(min = 10, max = 18, message = "身份证号不正确!")
   private String idCard;// 身份证号

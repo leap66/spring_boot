@@ -5,7 +5,7 @@ import com.leap.model.User;
 import com.leap.repository.UserRepository;
 import com.leap.util.ValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @time : 2017/9/5
  * @description :
  */
-@Service
+@Repository
 public class UserDao {
 
   private final UserRepository userRepository;

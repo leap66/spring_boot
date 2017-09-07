@@ -78,6 +78,7 @@ public class UserService {
    * @return List
    */
   public Response update(User user) throws BaseException {
+    ValidUtil.valid(user.getId(), "ID参数不允许为空");
     User temp = userDao.get(user.getId());
     ValidUtil.validDB(user.getVersion(), temp.getVersion());
     user.setVersion(temp.getVersion() + 1);
@@ -105,6 +106,7 @@ public class UserService {
    * @return List
    */
   public Response delete(String id) throws BaseException {
+    ValidUtil.valid(id, "ID参数不允许为空");
     userDao.delete(id);
     return ResultUtil.success(null);
   }
