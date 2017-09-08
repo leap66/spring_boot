@@ -2,8 +2,10 @@ package com.leap.service;
 
 import com.leap.dao.UserDao;
 import com.leap.handle.exception.base.BaseException;
+import com.leap.model.Auth;
 import com.leap.model.User;
-import com.leap.model.network.Response;
+import com.leap.model.in.network.Response;
+import com.leap.util.ConvertUtil;
 import com.leap.util.ResultUtil;
 import com.leap.util.ValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author : ylwei
@@ -22,10 +23,12 @@ import java.util.UUID;
 public class UserService {
 
   private final UserDao userDao;
+  private final AuthService authService;
 
   @Autowired
-  public UserService(UserDao userDao) {
+  public UserService(UserDao userDao, AuthService authService) {
     this.userDao = userDao;
+    this.authService = authService;
   }
 
   /**
@@ -35,7 +38,7 @@ public class UserService {
    */
   public Response query() throws BaseException {
     List<User> userList = userDao.query();
-    return ResultUtil.success(userList, userList.size(), false);
+    return ResultUtil.success(ConvertUtil.UserListToA(userList), userList.size(), false);
   }
 
   /**
@@ -45,7 +48,7 @@ public class UserService {
    */
   public Response get(Integer tranId) throws BaseException {
     User user = userDao.get(tranId);
-    return ResultUtil.success(user);
+    return ResultUtil.success(ConvertUtil.UserToA(user));
   }
 
   /**
@@ -55,7 +58,7 @@ public class UserService {
    */
   public Response get(String id) throws BaseException {
     User user = userDao.get(id);
-    return ResultUtil.success(user);
+    return ResultUtil.success(ConvertUtil.UserToA(user));
   }
 
   /**
@@ -64,12 +67,15 @@ public class UserService {
    * @return List
    */
   public Response save(User user) throws BaseException {
-    user.setId(UUID.randomUUID().toString());
+    Auth auth = authService.findByMobile(user.getMobile());
+    user.setId(auth.getId());
     user.setCreated(new Date());
     user.setLastModified(new Date());
     user.setVersion(1);
+    user.setEnabled(true);
+    user.setNormal(true);
     user = userDao.save(user);
-    return ResultUtil.success(user);
+    return ResultUtil.success(ConvertUtil.UserToA(user));
   }
 
   /**
@@ -81,13 +87,19 @@ public class UserService {
     ValidUtil.valid(user.getId(), "ID参数不允许为空");
     User temp = userDao.get(user.getId());
     ValidUtil.validDB(user.getVersion(), temp.getVersion());
-    user.setVersion(temp.getVersion() + 1);
-    user.setCreated(temp.getCreated());
-    user.setLastModified(new Date());
-    user.setId(temp.getId());
-    user.setTranId(temp.getTranId());
-    user = userDao.update(user);
-    return ResultUtil.success(user);
+    temp.setVersion(user.getVersion() + 1);
+    temp.setLastModified(new Date());
+    temp.setName(user.getName());
+    temp.setShortName(user.getShortName());
+    temp.setEmail(user.getEmail());
+    temp.setIdCard(user.getIdCard());
+    temp.setBirth(user.getBirth());
+    temp.setRemark(user.getRemark());
+    temp.setEducation(user.getEducation());
+    temp.setPhotoName(user.getPhotoName());
+    temp.setPhotoUrl(user.getPhotoUrl());
+    user = userDao.update(temp);
+    return ResultUtil.success(ConvertUtil.UserToA(user));
   }
 
   /**

@@ -46,6 +46,8 @@ public class User implements Serializable {
   private String photoName;// 头像名称
   private String photoUrl;// 头像URL
   private long version;// 版本号
+  private String history;
+  private boolean normal;// 正常账户,非解绑账户
 
   public User() {
   }
@@ -176,5 +178,21 @@ public class User implements Serializable {
 
   public void setVersion(long version) {
     this.version = version;
+  }
+
+  public String getHistory() {
+    return history;
+  }
+
+  public void setHistory(String history) {
+    this.history = history;
+  }
+
+  public boolean isNormal() {
+    return normal;
+  }
+
+  public void setNormal(boolean normal) {
+    this.normal = normal;
   }
 }

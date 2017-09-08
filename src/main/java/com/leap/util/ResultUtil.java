@@ -1,6 +1,6 @@
 package com.leap.util;
 
-import com.leap.model.network.Response;
+import com.leap.model.in.network.Response;
 
 import java.util.ArrayList;
 import java.util.Arrays;

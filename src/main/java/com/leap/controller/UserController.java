@@ -1,8 +1,9 @@
 package com.leap.controller;
 
+import com.leap.config.MarsConfig;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.User;
-import com.leap.model.network.Response;
+import com.leap.model.in.network.Response;
 import com.leap.service.UserService;
 import com.leap.util.ValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,7 @@ public class UserController {
    */
   @GetMapping(value = "/delete/{id}")
   public Response delete(@PathVariable Integer id) throws BaseException {
+    ValidUtil.validSecret(MarsConfig.secret);
     return service.delete(id);
   }
 
@@ -95,6 +97,7 @@ public class UserController {
    */
   @GetMapping(value = "/delete")
   public Response delete(String id) throws BaseException {
+    ValidUtil.validSecret(MarsConfig.secret);
     return service.delete(id);
   }
 }

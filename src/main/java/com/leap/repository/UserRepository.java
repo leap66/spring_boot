@@ -14,4 +14,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   // 通过id查找
   public List<User> findById(String id);
+
+  // 通过id查找
+  public List<User> findByNormal(boolean normal);
 }

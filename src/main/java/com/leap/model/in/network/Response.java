@@ -1,4 +1,4 @@
-package com.leap.model.network;
+package com.leap.model.in.network;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,13 +10,13 @@ import java.util.Map;
  * @description :
  */
 public class Response<T> implements Serializable {
-  private Integer code;
-  private boolean success;
-  private Map<String, String> fields;
-  private List<String> message;
-  private T data;
-  private int total;
-  private boolean more;
+  private Integer code;// 错误码
+  private boolean success;// 结果状态标识
+  private Map<String, String> fields;// 输出参数
+  private List<String> message;// 输出错误信息
+  private T data;// 成功时输出信息
+  private int total;// 总条数
+  private boolean more;// 是否有更多数据
 
   public Integer getCode() {
     return code;

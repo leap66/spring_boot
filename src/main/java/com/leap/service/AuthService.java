@@ -4,7 +4,7 @@ import com.leap.dao.AuthDao;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.Auth;
-import com.leap.model.network.Response;
+import com.leap.model.in.network.Response;
 import com.leap.util.ResultUtil;
 import com.leap.util.ValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +55,13 @@ public class AuthService {
    */
   public Response register(Auth auth) throws BaseException {
     ValidUtil.validMobile(auth.getMobile());
+    authDao.findByMobileCheck(auth.getMobile());
     auth.setId(UUID.randomUUID().toString());
     auth.setMobile(auth.getMobile());
     auth.setPassword(auth.getPassword());
     auth.setEnable(true);
+    auth.setNormal(true);
+    auth.setVersion(1);
     Auth temp1 = authDao.save(auth);
     return ResultUtil.success(temp1.getMobile());
   }
@@ -108,11 +111,13 @@ public class AuthService {
    * @return Response
    */
   public Response mobileReset(String mobile, String oldMobile, String code) throws BaseException {
-    ValidUtil.validMobile(mobile);
+    ValidUtil.validMobile(oldMobile);
     ValidUtil.validMobile(mobile);
     ValidUtil.valid(code, "验证码不允许为空");
     Auth temp = authDao.findByMobile(oldMobile);
+    authDao.findByMobileCheck(mobile);
     temp.setMobile(mobile);
+    temp.setHistory(temp.getHistory() + "&" + oldMobile);
     temp.setVersion(temp.getVersion() + 1);
     Auth temp1 = authDao.update(temp);
     return ResultUtil.success(temp1.getMobile());
@@ -129,12 +134,22 @@ public class AuthService {
   }
 
   /**
+   * 通过ID查找
+   *
+   * @return Auth
+   */
+  public Auth findByMobile(String mobile) throws BaseException {
+    ValidUtil.validMobile(mobile);
+    return authDao.findByMobile(mobile);
+  }
+
+  /**
    * 注销登陆
    *
    * @return Response
    */
   public Response logout(String id) throws BaseException {
-    ValidUtil.valid(id, "ID参数不允许为空");
+    ValidUtil.valid(id);
     Auth temp = authDao.findById(id);
     temp.setEnable(false);
     Auth temp1 = authDao.update(temp);

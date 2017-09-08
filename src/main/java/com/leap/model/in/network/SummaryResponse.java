@@ -1,4 +1,4 @@
-package com.leap.model.network;
+package com.leap.model.in.network;
 
 /**
  * @author  : ylwei

@@ -2,7 +2,7 @@ package com.leap.controller;
 
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.Auth;
-import com.leap.model.network.Response;
+import com.leap.model.in.network.Response;
 import com.leap.service.AuthService;
 import com.leap.util.ValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -24,7 +24,11 @@ public enum ExceptionEnum implements Serializable {
   //
   DAO_PASSWORD(363, "手机号或密码错误!"),
   //
-  DAO_REGISTER(364, "该账户已注册!"),
+  DAO_MOBILE_EXIST(364, "该账户已注册!"),
+  //
+  DAO_NORMAL(365, "该账户已被弃用!"),
+  //
+  DAO_SECRET(366, "无操作权限!"),
 
   //
   TOKEN_EXPIRE(401, "Token 已过期!"),

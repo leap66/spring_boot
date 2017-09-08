@@ -33,6 +33,8 @@ public class Auth {
   private long version;// 版本号
   @Length(max = 256, message = "remark最长为256位！")
   private String remark;// 备注
+  private String history;
+  private boolean normal;// 正常账户,非解绑账户
 
   public Auth() {
   }
@@ -99,5 +101,21 @@ public class Auth {
 
   public void setRemark(String remark) {
     this.remark = remark;
+  }
+
+  public String getHistory() {
+    return history;
+  }
+
+  public void setHistory(String history) {
+    this.history = history;
+  }
+
+  public boolean isNormal() {
+    return normal;
+  }
+
+  public void setNormal(boolean normal) {
+    this.normal = normal;
   }
 }

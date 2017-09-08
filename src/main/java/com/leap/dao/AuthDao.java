@@ -1,6 +1,7 @@
 package com.leap.dao;
 
 import com.leap.handle.exception.base.BaseException;
+import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.Auth;
 import com.leap.repository.AuthRepository;
 import com.leap.util.ValidUtil;
@@ -30,9 +31,6 @@ public class AuthDao {
    * @return Auth
    */
   public Auth save(Auth auth) throws BaseException {
-    List<Auth> authList = authRepository.findByMobile(auth.getMobile());
-    ValidUtil.validNoExist(authList);
-    auth.setVersion(auth.getVersion() + 1);
     return authRepository.save(auth);
   }
 
@@ -42,7 +40,7 @@ public class AuthDao {
    * @return Auth
    */
   public Auth update(Auth auth) throws BaseException {
-    return authRepository.save(auth);
+    return save(auth);
   }
 
   /**
@@ -53,7 +51,19 @@ public class AuthDao {
   public Auth findByMobile(String mobile) throws BaseException {
     List<Auth> authList = authRepository.findByMobile(mobile);
     ValidUtil.validExist(authList);
+    ValidUtil.validNormal(authList.get(0).isNormal());
     return authList.get(0);
+  }
+
+  /**
+   * 校验新用户，若已存在，则抛出异常 364
+   */
+  public void findByMobileCheck(String mobile) throws BaseException {
+    List<Auth> authList = authRepository.findByMobile(mobile);
+    if (null == authList)
+      return;
+    if (authList.size() != 0)
+      throw new BaseException(ExceptionEnum.DAO_MOBILE_EXIST);
   }
 
   /**
@@ -64,6 +74,7 @@ public class AuthDao {
   public Auth findById(String id) throws BaseException {
     List<Auth> authList = authRepository.findById(id);
     ValidUtil.validExist(authList);
+    ValidUtil.validNormal(authList.get(0).isNormal());
     return authList.get(0);
   }
 }

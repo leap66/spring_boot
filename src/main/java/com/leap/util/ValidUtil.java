@@ -14,10 +14,15 @@ import java.util.List;
  */
 public class ValidUtil {
 
-  // 表单验证异常
+  // 非空验证异常
   public static void valid(Object object, String remark) throws BaseException {
     if (null == object || object.equals(""))
       throw new BaseException(ExceptionEnum.DATA_EMPTY.getCode(), remark);
+  }
+
+  // 非空验证异常
+  public static void valid(Object object) throws BaseException {
+    valid(object, ExceptionEnum.DATA_EMPTY.getMsg());
   }
 
   // 表单验证异常
@@ -57,9 +62,15 @@ public class ValidUtil {
       throw new BaseException(ExceptionEnum.DAO_MOBILE);
   }
 
-  // 认证查询为空异常
-  public static void validNoExist(List object) throws BaseException {
-    if (null != object && object.size() != 0)
-      throw new BaseException(ExceptionEnum.DAO_REGISTER);
+  // 数据弃用验证
+  public static void validNormal(boolean normal) throws BaseException {
+    if (!normal)
+      throw new BaseException(ExceptionEnum.DAO_NORMAL);
+  }
+
+  // 敏感信息需要操作权限
+  public static void validSecret(boolean secret) throws BaseException {
+    if (secret)
+      throw new BaseException(ExceptionEnum.DAO_SECRET);
   }
 }

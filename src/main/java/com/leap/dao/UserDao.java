@@ -30,7 +30,7 @@ public class UserDao {
    * @return List
    */
   public List<User> query() throws BaseException {
-    return userRepository.findAll();
+    return userRepository.findByNormal(true);
   }
 
   /**
@@ -41,6 +41,7 @@ public class UserDao {
   public User get(Integer tranId) throws BaseException {
     User user = userRepository.getOne(tranId);
     ValidUtil.validDB(user);
+    ValidUtil.validNormal(user.isNormal());
     return user;
   }
 
@@ -52,6 +53,7 @@ public class UserDao {
   public User get(String id) throws BaseException {
     List<User> user = userRepository.findById(id);
     ValidUtil.validDB(user);
+    ValidUtil.validNormal(user.get(0).isNormal());
     return user.get(0);
   }
 
@@ -70,7 +72,7 @@ public class UserDao {
    * @return User
    */
   public User update(User user) throws BaseException {
-    return userRepository.save(user);
+    return save(user);
   }
 
   /**
@@ -78,7 +80,7 @@ public class UserDao {
    */
   public void delete(Integer id) throws BaseException {
     User user = get(id);
-    userRepository.delete(user.getTranId());
+    delete(user);
   }
 
   /**
@@ -86,6 +88,14 @@ public class UserDao {
    */
   public void delete(String id) throws BaseException {
     User user = get(id);
-    userRepository.delete(user.getTranId());
+    delete(user);
+  }
+
+  private void delete(User user) {
+    user.setHistory(user.getHistory() + "&" + user.getMobile());
+    user.setMobile("11111111111");
+    user.setId("&" + user.getId());
+    user.setNormal(false);
+    save(user);
   }
 }

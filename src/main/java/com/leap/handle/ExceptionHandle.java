@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
-import com.leap.model.network.Response;
+import com.leap.model.in.network.Response;
 import com.leap.util.LogUtil;
 import com.leap.util.ResultUtil;
 
