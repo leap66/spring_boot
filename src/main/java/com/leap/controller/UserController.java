@@ -1,6 +1,5 @@
 package com.leap.controller;
 
-import com.leap.config.MarsConfig;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.User;
 import com.leap.model.in.network.Response;
@@ -48,27 +47,6 @@ public class UserController {
   }
 
   /**
-   * 查询用户
-   *
-   * @return Response
-   */
-  @GetMapping(value = "/get/{tranId}")
-  public Response get(@PathVariable("tranId") Integer tranId) throws BaseException {
-    return service.get(tranId);
-  }
-
-  /**
-   * 新增用户
-   *
-   * @return Response
-   */
-  @PostMapping(value = "/save")
-  public Response save(@RequestBody @Valid User user, BindingResult result) throws BaseException {
-    ValidUtil.valid(result);
-    return service.save(user);
-  }
-
-  /**
    * 更新用户
    *
    * @return Response
@@ -77,27 +55,5 @@ public class UserController {
   public Response update(@RequestBody @Valid User user, BindingResult result) throws BaseException {
     ValidUtil.valid(result);
     return service.update(user);
-  }
-
-  /**
-   * 删除用户
-   *
-   * @return Response
-   */
-  @GetMapping(value = "/delete/{id}")
-  public Response delete(@PathVariable Integer id) throws BaseException {
-    ValidUtil.validSecret(MarsConfig.secret);
-    return service.delete(id);
-  }
-
-  /**
-   * 删除用户
-   *
-   * @return Response
-   */
-  @GetMapping(value = "/delete")
-  public Response delete(String id) throws BaseException {
-    ValidUtil.validSecret(MarsConfig.secret);
-    return service.delete(id);
   }
 }

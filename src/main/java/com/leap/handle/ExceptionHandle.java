@@ -22,7 +22,7 @@ import com.leap.util.ResultUtil;
 @ControllerAdvice
 public class ExceptionHandle {
 
-  LogUtil logger = new LogUtil(getClass().getName());
+  private LogUtil logger = new LogUtil(getClass().getName());
 
   @ExceptionHandler(value = Exception.class)
   @ResponseBody
@@ -30,21 +30,23 @@ public class ExceptionHandle {
     logger.error("Exception = {}", e);
     if (e instanceof BaseException) {
       BaseException exception = (BaseException) e;
-      return ResultUtil.error(exception.getCode(), e.getMessage());
+      return ResultUtil.error(exception.getCode(), exception.getMsg(), e.toString(),
+          e.getStackTrace()[0].toString());
     } else if (e instanceof HttpRequestMethodNotSupportedException) {
       return ResultUtil.error(ExceptionEnum.REQUEST_METHOD.getCode(),
-          ExceptionEnum.REQUEST_METHOD.getMsg(), e.getMessage());
+          ExceptionEnum.REQUEST_METHOD.getMsg(), e.toString(), e.getStackTrace()[0].toString());
     } else if (e instanceof HttpMediaTypeNotSupportedException) {
       return ResultUtil.error(ExceptionEnum.REQUEST_MEDIA_TYPE.getCode(),
-          ExceptionEnum.REQUEST_MEDIA_TYPE.getMsg(), e.getMessage());
+          ExceptionEnum.REQUEST_MEDIA_TYPE.getMsg(), e.toString(), e.getStackTrace()[0].toString());
     } else if (e instanceof MissingServletRequestParameterException) {
       return ResultUtil.error(ExceptionEnum.REQUEST_PARAMEtER.getCode(),
-          ExceptionEnum.REQUEST_PARAMEtER.getMsg(), e.getMessage());
+          ExceptionEnum.REQUEST_PARAMEtER.getMsg(), e.toString(), e.getStackTrace()[0].toString());
     } else if (e instanceof InvalidDataAccessApiUsageException) {
       return ResultUtil.error(ExceptionEnum.DATA_EMPTY.getCode(), ExceptionEnum.DATA_EMPTY.getMsg(),
-          e.getMessage());
+          e.toString(), e.getStackTrace()[0].toString());
     } else {
-      return ResultUtil.error(500, "未知错误", "请根据tran_id查询日志详情", e.getMessage());
+      return ResultUtil.error(500, "未知错误", "请根据tran_id查询日志详情", e.toString(),
+          e.getStackTrace()[0].toString());
     }
   }
 }

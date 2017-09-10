@@ -1,5 +1,6 @@
 package com.leap.aspect;
 
+import com.leap.model.Trace;
 import com.leap.util.GsonUtil;
 import com.leap.util.LogUtil;
 import org.aspectj.lang.JoinPoint;
@@ -9,6 +10,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author : ylwei
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 public class HttpAspect {
 
   private LogUtil logger = new LogUtil(getClass().getName());
+  private Trace trace;
 
   @Pointcut("execution(public * com.leap.controller..*(..))")
   public void log() {
@@ -27,36 +31,45 @@ public class HttpAspect {
 
   @Before("log()")
   public void doBefore(JoinPoint joinPoint) {
-    logger.info("开始请求");
+    logger.info("开始请求: ");
+    trace = new Trace();
     ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
         .getRequestAttributes();
     HttpServletRequest request = attributes.getRequest();
+    trace.setId(UUID.randomUUID().toString());
+    trace.setCreated(new Date());
     // url
-    logger.info("url = {}", request.getRequestURL());
+    trace.setUrl(request.getRequestURL().toString());
     // ip method
-    logger.info("ip + method = {}", request.getRemoteAddr() + "  :  " + request.getMethod());
+    trace.setIpId(request.getRemoteAddr());
+    // ip method
+    trace.setMethod(request.getMethod());
     // 类方法
-    logger.info("class_name = {}",
+    trace.setClassName(
         joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
     // 参数
-    logger.info("arg = {}", GsonUtil.toJson(joinPoint.getArgs()));
+    trace.setArg(GsonUtil.toJson(joinPoint.getArgs()));
     // trance_id
-    logger.info("trance_id = {}", request.getHeader("trance_id"));
+    trace.setTraceId(request.getHeader("trance_id"));
     // mars_cookie
-    logger.info("mars_cookie = {}", request.getHeader("mars_cookie"));
+    trace.setMarsCookie(request.getHeader("mars_cookie"));
     // Cookies
-    logger.info("Cookies = {}", GsonUtil.toJson(request.getCookies()));
+    trace.setCookies(GsonUtil.toJson(request.getCookies()));
     // Session
-    logger.info("Session = {}", GsonUtil.toJson(request.getSession()));
+    trace.setSession(GsonUtil.toJson(request.getCookies()));
+    logger.info("request = {}", GsonUtil.toJson(trace));
   }
 
   @After("log()")
   public void doAfter() {
-    logger.info("请求结束");
+    logger.info("请求结束: ");
   }
 
   @AfterReturning(returning = "object", pointcut = "log()")
   public void doAfterReturning(Object object) {
-    logger.info("response = {}", GsonUtil.toJson(object));
+    trace.setResponse(GsonUtil.toJson(object));
+    trace.setEnd(new Date());
+    // traceService.save(trace);
+    logger.info("response = {}", trace.getResponse());
   }
 }

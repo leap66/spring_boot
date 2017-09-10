@@ -2,10 +2,11 @@ package com.leap.service;
 
 import com.leap.dao.UserDao;
 import com.leap.handle.exception.base.BaseException;
-import com.leap.model.Auth;
+import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.User;
 import com.leap.model.in.network.Response;
 import com.leap.util.ConvertUtil;
+import com.leap.util.IsEmpty;
 import com.leap.util.ResultUtil;
 import com.leap.util.ValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,59 +24,25 @@ import java.util.List;
 public class UserService {
 
   private final UserDao userDao;
-  private final AuthService authService;
 
   @Autowired
-  public UserService(UserDao userDao, AuthService authService) {
+  public UserService(UserDao userDao) {
     this.userDao = userDao;
-    this.authService = authService;
   }
 
   /**
-   * 查询所有用户
-   *
-   * @return List
+   * 删除用户
    */
-  public Response query() throws BaseException {
-    List<User> userList = userDao.query();
-    return ResultUtil.success(ConvertUtil.UserListToA(userList), userList.size(), false);
-  }
-
-  /**
-   * 查询用户
-   *
-   * @return List
-   */
-  public Response get(Integer tranId) throws BaseException {
-    User user = userDao.get(tranId);
-    return ResultUtil.success(ConvertUtil.UserToA(user));
-  }
-
-  /**
-   * 查询用户-id
-   *
-   * @return List
-   */
-  public Response get(String id) throws BaseException {
+  void delete(String id) throws BaseException {
+    ValidUtil.valid(id, ExceptionEnum.DATA_EMPTY_ID);
     User user = userDao.get(id);
-    return ResultUtil.success(ConvertUtil.UserToA(user));
-  }
-
-  /**
-   * 新增用户
-   *
-   * @return List
-   */
-  public Response save(User user) throws BaseException {
-    Auth auth = authService.findByMobile(user.getMobile());
-    user.setId(auth.getId());
-    user.setCreated(new Date());
-    user.setLastModified(new Date());
-    user.setVersion(1);
-    user.setEnabled(true);
-    user.setNormal(true);
-    user = userDao.save(user);
-    return ResultUtil.success(ConvertUtil.UserToA(user));
+    user.setHistory(
+        (IsEmpty.string(user.getHistory()) ? "" : user.getHistory()) + user.getMobile() + "&");
+    user.setMobile("11111111111");
+    user.setId("&" + user.getId());
+    user.setEnabled(false);
+    user.setNormal(false);
+    userDao.delete(user);
   }
 
   /**
@@ -84,7 +51,7 @@ public class UserService {
    * @return List
    */
   public Response update(User user) throws BaseException {
-    ValidUtil.valid(user.getId(), "ID参数不允许为空");
+    ValidUtil.valid(user.getId(), ExceptionEnum.DATA_EMPTY_ID);
     User temp = userDao.get(user.getId());
     ValidUtil.validDB(user.getVersion(), temp.getVersion());
     temp.setVersion(user.getVersion() + 1);
@@ -103,23 +70,48 @@ public class UserService {
   }
 
   /**
-   * 删除用户
+   * 查询用户-id
    *
    * @return List
    */
-  public Response delete(Integer id) throws BaseException {
-    userDao.delete(id);
-    return ResultUtil.success(null);
+  public Response get(String id) throws BaseException {
+    User user = userDao.get(id);
+    return ResultUtil.success(ConvertUtil.UserToA(user));
   }
 
   /**
-   * 删除用户
+   * 查询所有用户
    *
    * @return List
    */
-  public Response delete(String id) throws BaseException {
-    ValidUtil.valid(id, "ID参数不允许为空");
-    userDao.delete(id);
-    return ResultUtil.success(null);
+  public Response query() throws BaseException {
+    List<User> userList = userDao.query();
+    return ResultUtil.success(ConvertUtil.UserListToA(userList), userList.size(), false);
+  }
+
+  /**
+   * 新增用户
+   */
+  void save(User user) throws BaseException {
+    user.setCreated(new Date());
+    user.setLastModified(new Date());
+    user.setVersion(1);
+    user.setEnabled(true);
+    user.setNormal(true);
+    user.setName(user.getMobile());
+    userDao.save(user);
+  }
+
+  /**
+   * 修改用户手机号
+   */
+  void mobileReset(String mobile, String oldMobile) throws BaseException {
+    User user = userDao.findByMobile(oldMobile);
+    user.setLastModified(new Date());
+    user.setHistory(
+        (IsEmpty.string(user.getHistory()) ? "" : user.getHistory()) + user.getMobile() + "&");
+    user.setMobile(mobile);
+    user.setVersion(user.getVersion() + 1);
+    userDao.update(user);
   }
 }

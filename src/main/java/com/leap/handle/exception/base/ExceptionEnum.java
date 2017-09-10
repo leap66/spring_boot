@@ -11,7 +11,11 @@ public enum ExceptionEnum implements Serializable {
 
   DATA_EMPTY(351, "参数验证空异常!"),
   //
-  DATA_MOBILE(352, "手机号验证异常!"),
+  DATA_MOBILE(352, "手机号参数异常!"),
+  //
+  DATA_EMPTY_ID(353, "ID参数空异常!"),
+  //
+  DATA_EMPTY_CODE(354, "验证码参数空异常!"),
   //
   DATA_NORM(355, "表单验证规则异常!"),
   //
@@ -26,9 +30,11 @@ public enum ExceptionEnum implements Serializable {
   //
   DAO_MOBILE_EXIST(364, "该账户已注册!"),
   //
-  DAO_NORMAL(365, "该账户已被弃用!"),
+  DAO_ID_EXIST(365, "该数据已存在!"),
   //
-  DAO_SECRET(366, "无操作权限!"),
+  DAO_NORMAL(366, "数据库查询无此数据!"),
+  //
+  DAO_SECRET(367, "无操作权限!"),
 
   //
   TOKEN_EXPIRE(401, "Token 已过期!"),

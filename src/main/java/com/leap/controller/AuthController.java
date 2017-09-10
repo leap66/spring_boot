@@ -1,6 +1,8 @@
 package com.leap.controller;
 
+import com.leap.config.MarsConfig;
 import com.leap.handle.exception.base.BaseException;
+import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.Auth;
 import com.leap.model.in.network.Response;
 import com.leap.service.AuthService;
@@ -28,17 +30,6 @@ public class AuthController {
   }
 
   /**
-   * 登陆
-   *
-   * @return Response
-   */
-  @PostMapping(value = "/login")
-  public Response login(@RequestParam("mobile") String mobile,
-      @RequestParam("password") String password) throws BaseException {
-    return authService.login(mobile, password);
-  }
-
-  /**
    * 注册
    *
    * @return Response
@@ -48,6 +39,17 @@ public class AuthController {
       throws BaseException {
     ValidUtil.valid(result);
     return authService.register(auth);
+  }
+
+  /**
+   * 登陆
+   *
+   * @return Response
+   */
+  @PostMapping(value = "/login")
+  public Response login(@RequestParam("mobile") String mobile,
+      @RequestParam("password") String password) throws BaseException {
+    return authService.login(mobile, password);
   }
 
   /**
@@ -66,8 +68,9 @@ public class AuthController {
    * @return Response
    */
   @PostMapping(value = "/sms/send")
-  public Response sendSms(@RequestParam("mobile") String mobile) throws BaseException {
-    return authService.sendSms(mobile);
+  public Response sendSms(@RequestParam("mobile") String mobile,
+      @RequestParam("exist") boolean exist) throws BaseException {
+    return authService.sendSms(mobile, exist);
   }
 
   /**
@@ -88,8 +91,9 @@ public class AuthController {
    */
   @PostMapping(value = "/reset/password")
   public Response pwdReset(@RequestParam("mobile") String mobile,
-      @RequestParam("password") String password) throws BaseException {
-    return authService.pwdReset(mobile, password);
+      @RequestParam("password") String password, @RequestParam("code") String code)
+      throws BaseException {
+    return authService.pwdReset(mobile, password, code);
   }
 
   /**
@@ -102,5 +106,16 @@ public class AuthController {
       @RequestParam("oldMobile") String oldMobile, @RequestParam("code") String code)
       throws BaseException {
     return authService.mobileReset(mobile, oldMobile, code);
+  }
+
+  /**
+   * 删除账号
+   *
+   * @return Response
+   */
+  @PostMapping(value = "/delete")
+  public Response delete(@RequestParam("mobile") String mobile) throws BaseException {
+    ValidUtil.valid(MarsConfig.secret, ExceptionEnum.DAO_SECRET);
+    return authService.delete(mobile);
   }
 }

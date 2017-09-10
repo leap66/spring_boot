@@ -26,55 +26,70 @@ public class AuthDao {
   }
 
   /**
-   * 注册
+   * 增-注册
    *
    * @return Auth
    */
   public Auth save(Auth auth) throws BaseException {
+    findByMobileCheck(auth.getMobile());
+    findByIDCheck(auth.getId());
     return authRepository.save(auth);
   }
 
   /**
-   * 重置更新
+   * 删-弃用
+   */
+  public void delete(Auth auth) throws BaseException {
+    authRepository.save(auth);
+  }
+
+  /**
+   * 改-更新
    *
    * @return Auth
    */
   public Auth update(Auth auth) throws BaseException {
-    return save(auth);
+    findById(auth.getId());
+    return authRepository.save(auth);
   }
 
   /**
-   * 通过手机号查找用户
+   * 查-Mobile
    *
    * @return Auth
    */
   public Auth findByMobile(String mobile) throws BaseException {
     List<Auth> authList = authRepository.findByMobile(mobile);
-    ValidUtil.validExist(authList);
-    ValidUtil.validNormal(authList.get(0).isNormal());
+    ValidUtil.valid(authList, true, ExceptionEnum.DAO_MOBILE);
+    ValidUtil.valid(authList.get(0).isNormal(), ExceptionEnum.DAO_NORMAL);
     return authList.get(0);
   }
 
   /**
-   * 校验新用户，若已存在，则抛出异常 364
-   */
-  public void findByMobileCheck(String mobile) throws BaseException {
-    List<Auth> authList = authRepository.findByMobile(mobile);
-    if (null == authList)
-      return;
-    if (authList.size() != 0)
-      throw new BaseException(ExceptionEnum.DAO_MOBILE_EXIST);
-  }
-
-  /**
-   * 通过ID查找用户
+   * 查-ID
    *
    * @return Auth
    */
   public Auth findById(String id) throws BaseException {
     List<Auth> authList = authRepository.findById(id);
-    ValidUtil.validExist(authList);
-    ValidUtil.validNormal(authList.get(0).isNormal());
+    ValidUtil.valid(authList, true, ExceptionEnum.DAO_EMPTY);
+    ValidUtil.valid(authList.get(0).isNormal(), ExceptionEnum.DAO_NORMAL);
     return authList.get(0);
+  }
+
+  /**
+   * Check-Mobile
+   */
+  public void findByMobileCheck(String mobile) throws BaseException {
+    List<Auth> authList = authRepository.findByMobile(mobile);
+    ValidUtil.valid(authList, false, ExceptionEnum.DAO_MOBILE_EXIST);
+  }
+
+  /**
+   * Check-ID
+   */
+  private void findByIDCheck(String id) throws BaseException {
+    List<Auth> authList = authRepository.findById(id);
+    ValidUtil.valid(authList, false, ExceptionEnum.DAO_ID_EXIST);
   }
 }

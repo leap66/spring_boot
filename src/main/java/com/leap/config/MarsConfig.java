@@ -11,5 +11,5 @@ public class MarsConfig {
   public static final boolean debug = true;
 
   // 敏感操作，需要授权
-  public static final boolean secret = false;
+  public static final boolean secret = true;
 }

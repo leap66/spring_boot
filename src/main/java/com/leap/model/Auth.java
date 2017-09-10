@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 
 /**
  * @author : ylwei
@@ -34,6 +35,8 @@ public class Auth {
   @Length(max = 256, message = "remark最长为256位！")
   private String remark;// 备注
   private String history;
+  private Date created;
+  private Date end;
   private boolean normal;// 正常账户,非解绑账户
 
   public Auth() {
@@ -117,5 +120,21 @@ public class Auth {
 
   public void setNormal(boolean normal) {
     this.normal = normal;
+  }
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public void setCreated(Date created) {
+    this.created = created;
+  }
+
+  public Date getEnd() {
+    return end;
+  }
+
+  public void setEnd(Date end) {
+    this.end = end;
   }
 }

@@ -1,6 +1,7 @@
 package com.leap.dao;
 
 import com.leap.handle.exception.base.BaseException;
+import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.User;
 import com.leap.repository.UserRepository;
 import com.leap.util.ValidUtil;
@@ -25,77 +26,58 @@ public class UserDao {
   }
 
   /**
-   * 查询所有用户
-   *
-   * @return List
+   * 增
    */
-  public List<User> query() throws BaseException {
-    return userRepository.findByNormal(true);
+  public void save(User user) throws BaseException {
+    userRepository.save(user);
   }
 
   /**
-   * 查询用户
+   * 删
+   */
+  public void delete(User user) throws BaseException {
+    userRepository.save(user);
+  }
+
+  /**
+   * 改
    *
    * @return User
    */
-  public User get(Integer tranId) throws BaseException {
-    User user = userRepository.getOne(tranId);
-    ValidUtil.validDB(user);
-    ValidUtil.validNormal(user.isNormal());
-    return user;
+  public User update(User user) throws BaseException {
+    return userRepository.save(user);
   }
 
   /**
-   * 查询用户
+   * 查-ID
    *
    * @return User
    */
   public User get(String id) throws BaseException {
     List<User> user = userRepository.findById(id);
-    ValidUtil.validDB(user);
-    ValidUtil.validNormal(user.get(0).isNormal());
+    ValidUtil.valid(user, true, ExceptionEnum.DAO_EMPTY);
+    ValidUtil.valid(user.get(0).isNormal(), ExceptionEnum.DAO_NORMAL);
     return user.get(0);
   }
 
   /**
-   * 新增用户
+   * 查-Mobile
    *
    * @return User
    */
-  public User save(User user) throws BaseException {
-    return userRepository.save(user);
+  public User findByMobile(String mobile) throws BaseException {
+    List<User> user = userRepository.findByMobile(mobile);
+    ValidUtil.valid(user, true, ExceptionEnum.DAO_EMPTY);
+    ValidUtil.valid(user.get(0).isNormal(), ExceptionEnum.DAO_NORMAL);
+    return user.get(0);
   }
 
   /**
-   * 更新用户
+   * 查询用户
    *
-   * @return User
+   * @return List
    */
-  public User update(User user) throws BaseException {
-    return save(user);
-  }
-
-  /**
-   * 删除用户
-   */
-  public void delete(Integer id) throws BaseException {
-    User user = get(id);
-    delete(user);
-  }
-
-  /**
-   * 删除用户
-   */
-  public void delete(String id) throws BaseException {
-    User user = get(id);
-    delete(user);
-  }
-
-  private void delete(User user) {
-    user.setHistory(user.getHistory() + "&" + user.getMobile());
-    user.setMobile("11111111111");
-    user.setId("&" + user.getId());
-    user.setNormal(false);
-    save(user);
+  public List<User> query() throws BaseException {
+    return userRepository.findByNormal(true);
   }
 }

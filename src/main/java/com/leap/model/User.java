@@ -33,7 +33,6 @@ public class User implements Serializable {
   @NotBlank(message = "手机号不能为空!")
   private String mobile;// 手机号
   @Email(message = "邮箱校验不正确!")
-  @NotBlank(message = "邮箱不能为空!")
   private String email;// 邮箱
   @Length(min = 10, max = 18, message = "身份证号不正确!")
   private String idCard;// 身份证号
