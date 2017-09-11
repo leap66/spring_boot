@@ -1,5 +1,6 @@
 package com.leap.service;
 
+import com.leap.cmp.TokenMgr;
 import com.leap.dao.AuthDao;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
@@ -63,6 +64,7 @@ public class AuthService {
     loginCheck(password, temp.getPassword());
     temp.setEnable(true);
     authDao.update(temp);
+    TokenMgr.setUserId(temp.getId());
     return ResultUtil.success(mobile);
   }
 
@@ -104,6 +106,7 @@ public class AuthService {
     ValidUtil.validMobile(mobile);
     ValidUtil.valid(code, ExceptionEnum.DATA_EMPTY_CODE);
     Auth temp = authDao.findByMobile(mobile);
+    ValidUtil.validToken(temp.getId());
     temp.setPassword(password);
     temp.setVersion(temp.getVersion() + 1);
     temp.setEnd(new Date());
@@ -156,7 +159,7 @@ public class AuthService {
     temp.setId("&" + temp.getId());
     temp.setNormal(false);
     authDao.delete(temp);
-    userService.delete(temp.getId());
+    userService.delete(mobile);
     return ResultUtil.success(true);
   }
 

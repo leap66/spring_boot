@@ -52,7 +52,7 @@ public class HttpAspect {
     // trance_id
     trace.setTraceId(request.getHeader("trance_id"));
     // mars_cookie
-    trace.setMarsCookie(request.getHeader("mars_cookie"));
+    trace.setMarsCookie(request.getHeader("Cookie"));
     // Cookies
     trace.setCookies(GsonUtil.toJson(request.getCookies()));
     // Session

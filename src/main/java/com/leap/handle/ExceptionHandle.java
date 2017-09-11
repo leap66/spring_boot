@@ -1,5 +1,6 @@
 package com.leap.handle;
 
+import com.leap.util.ServletUtil;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -28,25 +29,27 @@ public class ExceptionHandle {
   @ResponseBody
   public Response handle(Exception e) {
     logger.error("Exception = {}", e);
+    ExceptionEnum exceptionEnum;
     if (e instanceof BaseException) {
       BaseException exception = (BaseException) e;
+      ServletUtil.getResponse().setStatus(exception.getCode());
       return ResultUtil.error(exception.getCode(), exception.getMsg(), e.toString(),
           e.getStackTrace()[0].toString());
     } else if (e instanceof HttpRequestMethodNotSupportedException) {
-      return ResultUtil.error(ExceptionEnum.REQUEST_METHOD.getCode(),
-          ExceptionEnum.REQUEST_METHOD.getMsg(), e.toString(), e.getStackTrace()[0].toString());
+      exceptionEnum = ExceptionEnum.REQUEST_METHOD;
     } else if (e instanceof HttpMediaTypeNotSupportedException) {
-      return ResultUtil.error(ExceptionEnum.REQUEST_MEDIA_TYPE.getCode(),
-          ExceptionEnum.REQUEST_MEDIA_TYPE.getMsg(), e.toString(), e.getStackTrace()[0].toString());
+      exceptionEnum = ExceptionEnum.REQUEST_MEDIA_TYPE;
     } else if (e instanceof MissingServletRequestParameterException) {
-      return ResultUtil.error(ExceptionEnum.REQUEST_PARAMEtER.getCode(),
-          ExceptionEnum.REQUEST_PARAMEtER.getMsg(), e.toString(), e.getStackTrace()[0].toString());
+      exceptionEnum = ExceptionEnum.REQUEST_PARAMEtER;
     } else if (e instanceof InvalidDataAccessApiUsageException) {
-      return ResultUtil.error(ExceptionEnum.DATA_EMPTY.getCode(), ExceptionEnum.DATA_EMPTY.getMsg(),
-          e.toString(), e.getStackTrace()[0].toString());
+      exceptionEnum = ExceptionEnum.DATA_EMPTY;
     } else {
+      ServletUtil.getResponse().setStatus(500);
       return ResultUtil.error(500, "未知错误", "请根据tran_id查询日志详情", e.toString(),
           e.getStackTrace()[0].toString());
     }
+    ServletUtil.getResponse().setStatus(exceptionEnum.getCode());
+    return ResultUtil.error(exceptionEnum.getCode(), exceptionEnum.getMsg(), e.toString(),
+        e.getStackTrace()[0].toString());
   }
 }

@@ -1,5 +1,6 @@
 package com.leap.util;
 
+import com.leap.cmp.TokenMgr;
 import org.springframework.validation.BindingResult;
 
 import com.leap.handle.exception.base.BaseException;
@@ -13,6 +14,13 @@ import java.util.List;
  * @description :
  */
 public class ValidUtil {
+
+  public static void validToken(String userId) throws BaseException {
+    if (IsEmpty.string(userId))
+      throw new BaseException(ExceptionEnum.DAO_EMPTY);
+    if (userId.equals(TokenMgr.getUserId()))
+      throw new BaseException(ExceptionEnum.TOKEN_EXPIRE);
+  }
 
   // 表单验证异常
   public static void valid(BindingResult result) throws BaseException {

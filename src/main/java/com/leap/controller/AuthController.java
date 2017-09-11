@@ -115,7 +115,7 @@ public class AuthController {
    */
   @PostMapping(value = "/delete")
   public Response delete(@RequestParam("mobile") String mobile) throws BaseException {
-    ValidUtil.valid(MarsConfig.secret, ExceptionEnum.DAO_SECRET);
+    ValidUtil.valid(!MarsConfig.secret, ExceptionEnum.DAO_SECRET);
     return authService.delete(mobile);
   }
 }

@@ -33,9 +33,8 @@ public class UserService {
   /**
    * 删除用户
    */
-  void delete(String id) throws BaseException {
-    ValidUtil.valid(id, ExceptionEnum.DATA_EMPTY_ID);
-    User user = userDao.get(id);
+  void delete(String mobile) throws BaseException {
+    User user = userDao.findByMobile(mobile);
     user.setHistory(
         (IsEmpty.string(user.getHistory()) ? "" : user.getHistory()) + user.getMobile() + "&");
     user.setMobile("11111111111");
