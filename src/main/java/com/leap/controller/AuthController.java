@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,8 +96,8 @@ public class AuthController {
    */
   @PostMapping(value = "/sms/send")
   public Response sendSms(@RequestParam("mobile") String mobile,
-      @RequestParam("exist") boolean exist,HttpServletRequest request) throws BaseException {
-    return authService.sendSms(mobile, exist,request);
+      @RequestParam("exist") boolean exist) throws BaseException {
+    return authService.sendSms(mobile, exist);
   }
 
   /**

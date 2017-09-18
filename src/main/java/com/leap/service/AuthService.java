@@ -12,7 +12,6 @@ import com.leap.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.UUID;
 
@@ -77,11 +76,10 @@ public class AuthService {
    *
    * @return Response
    */
-  public Response sendSms(String mobile, boolean exist, HttpServletRequest request) throws BaseException {
+  public Response sendSms(String mobile, boolean exist) throws BaseException {
     ValidUtil.validMobile(mobile);
     if (exist) {
-      Auth auth = authDao.findByMobile(mobile);
-      ValidUtil.validToken(request,redisServer.get(RedisUtil.key(auth.getId())));
+      authDao.findByMobile(mobile);
     } else {
       authDao.findByMobileCheck(mobile);
     }
@@ -111,7 +109,6 @@ public class AuthService {
     ValidUtil.validMobile(mobile);
     ValidUtil.valid(code, ExceptionEnum.DATA_EMPTY_CODE);
     Auth temp = authDao.findByMobile(mobile);
-    ValidUtil.validToken(temp.getId());
     temp.setPassword(password);
     temp.setVersion(temp.getVersion() + 1);
     temp.setEnd(new Date());
@@ -146,7 +143,6 @@ public class AuthService {
    */
   public Response logout(String id) throws BaseException {
     ValidUtil.valid(id, ExceptionEnum.DATA_EMPTY_ID);
-//    ValidUtil.validToken(JwtUtil.parse(redisServer.get(RedisUtil.key(id))));
     Auth temp = findById(id);
     temp.setEnable(false);
     temp.setEnd(new Date());

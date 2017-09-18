@@ -1,13 +1,9 @@
 package com.leap.util;
 
-import com.leap.cmp.TokenMgr;
-import com.leap.config.MarsConfig;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
 import org.springframework.validation.BindingResult;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -16,27 +12,6 @@ import java.util.List;
  * @description :
  */
 public class ValidUtil {
-
-  public static void validToken(HttpServletRequest request, String token) throws BaseException {
-    if (IsEmpty.string(token) || IsEmpty.object(request))
-      throw new BaseException(ExceptionEnum.TOKEN_EXPIRE);
-    String requestToken = "";
-    for (Cookie cookie : request.getCookies()) {
-      if (MarsConfig.JWT_ID.equals(cookie.getName())) {
-        requestToken = cookie.getValue();
-        break;
-      }
-    }
-    if (!JwtUtil.parse(token).equals(JwtUtil.parse(requestToken)))
-      throw new BaseException(ExceptionEnum.TOKEN_EXPIRE);
-  }
-
-  public static void validToken(String userId) throws BaseException {
-    if (IsEmpty.string(userId))
-      throw new BaseException(ExceptionEnum.TOKEN_EXPIRE);
-    if (userId.equals(JwtUtil.parse(TokenMgr.getToken())))
-      throw new BaseException(ExceptionEnum.TOKEN_EXPIRE);
-  }
 
   // 表单验证异常
   public static void valid(BindingResult result) throws BaseException {
