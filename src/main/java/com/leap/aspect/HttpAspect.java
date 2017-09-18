@@ -3,11 +3,10 @@ package com.leap.aspect;
 import com.leap.model.Trace;
 import com.leap.util.GsonUtil;
 import com.leap.util.LogUtil;
+import com.leap.util.ServletUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -33,9 +32,7 @@ public class HttpAspect {
   public void doBefore(JoinPoint joinPoint) {
     logger.info("开始请求: ");
     trace = new Trace();
-    ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
-        .getRequestAttributes();
-    HttpServletRequest request = attributes.getRequest();
+    HttpServletRequest request = ServletUtil.getRequest();
     trace.setId(UUID.randomUUID().toString());
     trace.setCreated(new Date());
     // url
@@ -55,8 +52,6 @@ public class HttpAspect {
     trace.setMarsCookie(request.getHeader("Cookie"));
     // Cookies
     trace.setCookies(GsonUtil.toJson(request.getCookies()));
-    // Session
-    trace.setSession(GsonUtil.toJson(request.getCookies()));
     logger.info("request = {}", GsonUtil.toJson(trace));
   }
 

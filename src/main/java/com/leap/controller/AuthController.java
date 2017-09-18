@@ -5,13 +5,20 @@ import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.Auth;
 import com.leap.model.in.network.Response;
+import com.leap.model.out.base.BUcn;
 import com.leap.service.AuthService;
+import com.leap.service.connect.IRedisServer;
+import com.leap.util.ResultUtil;
 import com.leap.util.ValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author : ylwei
@@ -19,14 +26,35 @@ import javax.validation.Valid;
  * @description :
  */
 @RestController
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/leap/app/auth")
 public class AuthController {
 
   private final AuthService authService;
+  private final IRedisServer redisServer;
 
   @Autowired
-  public AuthController(AuthService authService) {
+  public AuthController(AuthService authService, IRedisServer redisServer) {
     this.authService = authService;
+    this.redisServer = redisServer;
+  }
+
+  /**
+   * 测试
+   *
+   * @return Response
+   */
+  @PostMapping(value = "/test/{id}")
+  @ResponseBody
+  public Response test(@PathVariable(name = "id") String id) throws BaseException {
+    List<BUcn> userList = new ArrayList<>();
+    BUcn bUcn = new BUcn();
+    bUcn.setId(UUID.randomUUID().toString());
+    bUcn.setName("12好的" + id);
+    userList.add(bUcn);
+    userList.add(bUcn);
+    redisServer.setList("user", userList);
+    redisServer.expire("user", 100);
+    return ResultUtil.success(redisServer.getList("user", BUcn.class));
   }
 
   /**
@@ -69,8 +97,8 @@ public class AuthController {
    */
   @PostMapping(value = "/sms/send")
   public Response sendSms(@RequestParam("mobile") String mobile,
-      @RequestParam("exist") boolean exist) throws BaseException {
-    return authService.sendSms(mobile, exist);
+      @RequestParam("exist") boolean exist,HttpServletRequest request) throws BaseException {
+    return authService.sendSms(mobile, exist,request);
   }
 
   /**

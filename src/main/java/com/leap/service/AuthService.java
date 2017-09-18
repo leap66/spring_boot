@@ -7,12 +7,12 @@ import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.Auth;
 import com.leap.model.User;
 import com.leap.model.in.network.Response;
-import com.leap.util.IsEmpty;
-import com.leap.util.ResultUtil;
-import com.leap.util.ValidUtil;
+import com.leap.service.connect.IRedisServer;
+import com.leap.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.UUID;
 
@@ -26,11 +26,13 @@ public class AuthService {
 
   private final AuthDao authDao;
   private final UserService userService;
+  private final IRedisServer redisServer;
 
   @Autowired
-  public AuthService(UserService userService, AuthDao authDao) {
+  public AuthService(UserService userService, AuthDao authDao, IRedisServer redisServer) {
     this.userService = userService;
     this.authDao = authDao;
+    this.redisServer = redisServer;
   }
 
   /**
@@ -64,7 +66,9 @@ public class AuthService {
     loginCheck(password, temp.getPassword());
     temp.setEnable(true);
     authDao.update(temp);
-    TokenMgr.setUserId(temp.getId());
+    String token = JwtUtil.created(temp.getId());
+    TokenMgr.setToken(token);
+    redisServer.set(RedisUtil.key(temp.getId()), token);
     return ResultUtil.success(mobile);
   }
 
@@ -73,10 +77,11 @@ public class AuthService {
    *
    * @return Response
    */
-  public Response sendSms(String mobile, boolean exist) throws BaseException {
+  public Response sendSms(String mobile, boolean exist, HttpServletRequest request) throws BaseException {
     ValidUtil.validMobile(mobile);
     if (exist) {
-      authDao.findByMobile(mobile);
+      Auth auth = authDao.findByMobile(mobile);
+      ValidUtil.validToken(request,redisServer.get(RedisUtil.key(auth.getId())));
     } else {
       authDao.findByMobileCheck(mobile);
     }
@@ -141,10 +146,13 @@ public class AuthService {
    */
   public Response logout(String id) throws BaseException {
     ValidUtil.valid(id, ExceptionEnum.DATA_EMPTY_ID);
+//    ValidUtil.validToken(JwtUtil.parse(redisServer.get(RedisUtil.key(id))));
     Auth temp = findById(id);
     temp.setEnable(false);
     temp.setEnd(new Date());
     Auth temp1 = authDao.update(temp);
+    TokenMgr.clearToken();
+    redisServer.del(RedisUtil.key(id));
     return ResultUtil.success(temp1.getMobile());
   }
 

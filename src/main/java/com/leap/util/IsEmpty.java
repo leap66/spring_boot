@@ -36,14 +36,14 @@ public class IsEmpty {
   }
 
   public static boolean string(String... objects) {
-    boolean allEmpty = true;
+    boolean existEmpty = false;
     for (String s : objects) {
       if (null == s || "".equals(s)) {
-        allEmpty = false;
+        existEmpty = true;
         break;
       }
     }
-    return allEmpty;
+    return existEmpty;
   }
 
   public static boolean object(Object object) {

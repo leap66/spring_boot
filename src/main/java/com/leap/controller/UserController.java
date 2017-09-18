@@ -16,7 +16,7 @@ import javax.validation.Valid;
  */
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/leap/app/user")
 public class UserController {
 
   private final UserService service;

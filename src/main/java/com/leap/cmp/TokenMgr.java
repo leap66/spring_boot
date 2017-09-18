@@ -1,7 +1,6 @@
 package com.leap.cmp;
 
 import com.leap.config.MarsConfig;
-import com.leap.util.JwtUtil;
 import com.leap.util.ServletUtil;
 
 import javax.servlet.http.Cookie;
@@ -20,21 +19,32 @@ public class TokenMgr {
    * 
    * @return userID
    */
-  public static String getUserId() {
+  public static String getToken() {
     HttpServletRequest request = ServletUtil.getRequest();
-    return JwtUtil.parse(request.getHeader("Cookie"));
+    return request.getHeader("Cookie");
   }
 
   /**
    * 根据response设置UserID
-   * 
-   * @param userId
+   *
+   * @param token
    *          userID
    */
-  public static void setUserId(String userId) {
+  public static void setToken(String token) {
     HttpServletResponse response = ServletUtil.getResponse();
-    Cookie cookie = new Cookie(MarsConfig.JWT_ID, JwtUtil.created(userId));
+    Cookie cookie = new Cookie(MarsConfig.JWT_ID, token);
+    cookie.setPath("/leap");
     cookie.setHttpOnly(true);
+    response.addCookie(cookie);
+  }
+
+  /**
+   * 根据response 清除 Token
+   */
+  public static void clearToken() {
+    HttpServletResponse response = ServletUtil.getResponse();
+    Cookie cookie = new Cookie(MarsConfig.JWT_ID, null);
+    cookie.setMaxAge(0);
     response.addCookie(cookie);
   }
 }
