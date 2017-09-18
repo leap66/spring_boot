@@ -7,7 +7,7 @@ import com.leap.service.connect.IRedisServer;
 import com.leap.util.JwtUtil;
 import com.leap.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * @time : 2017/9/18
  * @description :
  */
-@Service
+@Configuration
 public class TokenFilter implements HandlerInterceptor {
 
   private final IRedisServer redisService;
@@ -55,6 +55,9 @@ public class TokenFilter implements HandlerInterceptor {
       HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
   }
 
+  /**
+   * 获取请求token
+   */
   private String getToken(HttpServletRequest httpServletRequest) {
     String requestToken = "";
     for (Cookie cookie : httpServletRequest.getCookies()) {

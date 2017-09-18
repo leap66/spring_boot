@@ -2,6 +2,7 @@ package com.leap.service;
 
 import com.leap.dao.TraceDao;
 import com.leap.model.Trace;
+import com.leap.service.connect.ITraceServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @description :
  */
 @Service
-public class TraceService {
+public class TraceService implements ITraceServer{
 
   private final TraceDao traceDao;
 
@@ -22,18 +23,12 @@ public class TraceService {
     this.traceDao = traceDao;
   }
 
-  /**
-   * 增
-   */
+  @Override
   public void save(Trace trace) {
     traceDao.save(trace);
   }
 
-  /**
-   * 查
-   *
-   * @return List<Trace>
-   */
+  @Override
   public List<Trace> get(String traceId) {
     return traceDao.get(traceId);
   }

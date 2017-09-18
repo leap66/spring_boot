@@ -10,7 +10,7 @@ import com.leap.config.MarsConfig;
 public class RedisUtil {
 
   /**
-   * 根据userID生产唯一码
+   * 根据userID生产Token唯一码
    * 
    * @param key
    *          userID

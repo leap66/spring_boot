@@ -6,7 +6,7 @@ import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.Auth;
 import com.leap.model.in.network.Response;
 import com.leap.model.out.base.BUcn;
-import com.leap.service.AuthService;
+import com.leap.service.connect.IAuthServer;
 import com.leap.service.connect.IRedisServer;
 import com.leap.util.ResultUtil;
 import com.leap.util.ValidUtil;
@@ -28,11 +28,11 @@ import java.util.UUID;
 @RequestMapping(value = "/leap/app/auth")
 public class AuthController {
 
-  private final AuthService authService;
+  private final IAuthServer authService;
   private final IRedisServer redisServer;
 
   @Autowired
-  public AuthController(AuthService authService, IRedisServer redisServer) {
+  public AuthController(IAuthServer authService, IRedisServer redisServer) {
     this.authService = authService;
     this.redisServer = redisServer;
   }

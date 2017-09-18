@@ -4,7 +4,6 @@ import com.leap.config.MarsConfig;
 import com.leap.util.ServletUtil;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -15,20 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 public class TokenMgr {
 
   /**
-   * 根据request拿到UserID
-   * 
-   * @return userID
-   */
-  public static String getToken() {
-    HttpServletRequest request = ServletUtil.getRequest();
-    return request.getHeader("Cookie");
-  }
-
-  /**
-   * 根据response设置UserID
+   * 根据response、UserID设置Token
    *
    * @param token
-   *          userID
+   *          Token
    */
   public static void setToken(String token) {
     HttpServletResponse response = ServletUtil.getResponse();

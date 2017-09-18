@@ -18,5 +18,5 @@ public class MarsConfig {
   public static final String JWT_SECRET = "weiyaling@hd123.com";
   public static final long JWT_ttlMillis = 12 * 60 * 60 * 1000;
 
-  public static final String TOKEN_ID = "marsRedis";
+  public static final String TOKEN_ID = "marsRedisToken";
 }

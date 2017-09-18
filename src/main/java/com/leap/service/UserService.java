@@ -1,10 +1,10 @@
 package com.leap.service;
 
 import com.leap.dao.UserDao;
-import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.User;
 import com.leap.model.in.network.Response;
+import com.leap.service.connect.IUserServer;
 import com.leap.util.ConvertUtil;
 import com.leap.util.IsEmpty;
 import com.leap.util.ResultUtil;
@@ -21,7 +21,7 @@ import java.util.List;
  * @description :
  */
 @Service
-public class UserService {
+public class UserService implements IUserServer {
 
   private final UserDao userDao;
 
@@ -30,10 +30,8 @@ public class UserService {
     this.userDao = userDao;
   }
 
-  /**
-   * 删除用户
-   */
-  void delete(String mobile) throws BaseException {
+  @Override
+  public void delete(String mobile) {
     User user = userDao.findByMobile(mobile);
     user.setHistory(
         (IsEmpty.string(user.getHistory()) ? "" : user.getHistory()) + user.getMobile() + "&");
@@ -44,12 +42,8 @@ public class UserService {
     userDao.delete(user);
   }
 
-  /**
-   * 更新用户
-   *
-   * @return List
-   */
-  public Response update(User user) throws BaseException {
+  @Override
+  public Response update(User user) {
     ValidUtil.valid(user.getId(), ExceptionEnum.DATA_EMPTY_ID);
     User temp = userDao.get(user.getId());
     ValidUtil.validDB(user.getVersion(), temp.getVersion());
@@ -68,30 +62,20 @@ public class UserService {
     return ResultUtil.success(ConvertUtil.UserToA(user));
   }
 
-  /**
-   * 查询用户-id
-   *
-   * @return List
-   */
-  public Response get(String id) throws BaseException {
+  @Override
+  public Response get(String id) {
     User user = userDao.get(id);
     return ResultUtil.success(ConvertUtil.UserToA(user));
   }
 
-  /**
-   * 查询所有用户
-   *
-   * @return List
-   */
-  public Response query() throws BaseException {
+  @Override
+  public Response query() {
     List<User> userList = userDao.query();
     return ResultUtil.success(ConvertUtil.UserListToA(userList), userList.size(), false);
   }
 
-  /**
-   * 新增用户
-   */
-  void save(User user) throws BaseException {
+  @Override
+  public void save(User user) {
     user.setCreated(new Date());
     user.setLastModified(new Date());
     user.setVersion(1);
@@ -101,10 +85,8 @@ public class UserService {
     userDao.save(user);
   }
 
-  /**
-   * 修改用户手机号
-   */
-  void mobileReset(String mobile, String oldMobile) throws BaseException {
+  @Override
+  public void mobileReset(String mobile, String oldMobile) {
     User user = userDao.findByMobile(oldMobile);
     user.setLastModified(new Date());
     user.setHistory(

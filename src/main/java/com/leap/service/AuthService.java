@@ -7,10 +7,13 @@ import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.Auth;
 import com.leap.model.User;
 import com.leap.model.in.network.Response;
+import com.leap.service.connect.IAuthServer;
 import com.leap.service.connect.IRedisServer;
+import com.leap.service.connect.IUserServer;
 import com.leap.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.UUID;
@@ -21,25 +24,22 @@ import java.util.UUID;
  * @description :
  */
 @Service
-public class AuthService {
+public class AuthService implements IAuthServer {
 
   private final AuthDao authDao;
-  private final UserService userService;
+  private final IUserServer userService;
   private final IRedisServer redisServer;
 
   @Autowired
-  public AuthService(UserService userService, AuthDao authDao, IRedisServer redisServer) {
+  public AuthService(IUserServer userService, AuthDao authDao, IRedisServer redisServer) {
     this.userService = userService;
     this.authDao = authDao;
     this.redisServer = redisServer;
   }
 
-  /**
-   * 注册
-   *
-   * @return Response
-   */
-  public Response register(Auth auth) throws BaseException {
+  @Transactional
+  @Override
+  public Response register(Auth auth) {
     ValidUtil.validMobile(auth.getMobile());
     auth.setId(UUID.randomUUID().toString());
     auth.setCreated(new Date());
@@ -55,12 +55,9 @@ public class AuthService {
     return ResultUtil.success(temp1.getMobile());
   }
 
-  /**
-   * 登陆
-   *
-   * @return Response
-   */
-  public Response login(String mobile, String password) throws BaseException {
+  @Transactional
+  @Override
+  public Response login(String mobile, String password) {
     Auth temp = findByMobile(mobile);
     loginCheck(password, temp.getPassword());
     temp.setEnable(true);
@@ -71,12 +68,8 @@ public class AuthService {
     return ResultUtil.success(mobile);
   }
 
-  /**
-   * 发送验证码
-   *
-   * @return Response
-   */
-  public Response sendSms(String mobile, boolean exist) throws BaseException {
+  @Override
+  public Response sendSms(String mobile, boolean exist) {
     ValidUtil.validMobile(mobile);
     if (exist) {
       authDao.findByMobile(mobile);
@@ -87,12 +80,8 @@ public class AuthService {
     return ResultUtil.success(mobile);
   }
 
-  /**
-   * 校验验证码
-   *
-   * @return Response
-   */
-  public Response checkSms(String mobile, String code) throws BaseException {
+  @Override
+  public Response checkSms(String mobile, String code) {
     ValidUtil.validMobile(mobile);
     authDao.findByMobile(mobile);
     ValidUtil.valid(code, ExceptionEnum.DATA_EMPTY_CODE);
@@ -100,12 +89,8 @@ public class AuthService {
     return ResultUtil.success(mobile);
   }
 
-  /**
-   * 重置密码
-   *
-   * @return Response
-   */
-  public Response pwdReset(String mobile, String password, String code) throws BaseException {
+  @Override
+  public Response pwdReset(String mobile, String password, String code) {
     ValidUtil.validMobile(mobile);
     ValidUtil.valid(code, ExceptionEnum.DATA_EMPTY_CODE);
     Auth temp = authDao.findByMobile(mobile);
@@ -116,12 +101,9 @@ public class AuthService {
     return ResultUtil.success(temp1.getMobile());
   }
 
-  /**
-   * 修改手机号
-   *
-   * @return Response
-   */
-  public Response mobileReset(String mobile, String oldMobile, String code) throws BaseException {
+  @Transactional
+  @Override
+  public Response mobileReset(String mobile, String oldMobile, String code) {
     ValidUtil.validMobile(mobile);
     ValidUtil.valid(code, ExceptionEnum.DATA_EMPTY_CODE);
     authDao.findByMobileCheck(mobile);
@@ -136,26 +118,21 @@ public class AuthService {
     return ResultUtil.success(temp1.getMobile());
   }
 
-  /**
-   * 注销登陆
-   *
-   * @return Response
-   */
-  public Response logout(String id) throws BaseException {
+  @Transactional
+  @Override
+  public Response logout(String id) {
     ValidUtil.valid(id, ExceptionEnum.DATA_EMPTY_ID);
     Auth temp = findById(id);
     temp.setEnable(false);
-    temp.setEnd(new Date());
     Auth temp1 = authDao.update(temp);
     TokenMgr.clearToken();
     redisServer.del(RedisUtil.key(id));
     return ResultUtil.success(temp1.getMobile());
   }
 
-  /**
-   * 删除
-   */
-  public Response delete(String mobile) throws BaseException {
+  @Transactional
+  @Override
+  public Response delete(String mobile) {
     Auth temp = findByMobile(mobile);
     temp.setHistory(
         (IsEmpty.string(temp.getHistory()) ? "" : temp.getHistory()) + temp.getMobile() + "&");
@@ -165,6 +142,18 @@ public class AuthService {
     authDao.delete(temp);
     userService.delete(mobile);
     return ResultUtil.success(true);
+  }
+
+  @Override
+  public Auth findById(String id) {
+    ValidUtil.valid(id, ExceptionEnum.DATA_EMPTY_ID);
+    return authDao.findById(id);
+  }
+
+  @Override
+  public Auth findByMobile(String mobile) {
+    ValidUtil.validMobile(mobile);
+    return authDao.findByMobile(mobile);
   }
 
   // 登陆密码验证
@@ -177,25 +166,5 @@ public class AuthService {
       if (!password.equals(pwd))
         throw new BaseException(ExceptionEnum.DAO_PASSWORD);
     }
-  }
-
-  /**
-   * 查-ID
-   *
-   * @return Auth
-   */
-  private Auth findById(String id) throws BaseException {
-    ValidUtil.valid(id, ExceptionEnum.DATA_EMPTY_ID);
-    return authDao.findById(id);
-  }
-
-  /**
-   * 查-Mobile
-   *
-   * @return Auth
-   */
-  private Auth findByMobile(String mobile) throws BaseException {
-    ValidUtil.validMobile(mobile);
-    return authDao.findByMobile(mobile);
   }
 }

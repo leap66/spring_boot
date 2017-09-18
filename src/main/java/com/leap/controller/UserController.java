@@ -3,7 +3,7 @@ package com.leap.controller;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.User;
 import com.leap.model.in.network.Response;
-import com.leap.service.UserService;
+import com.leap.service.connect.IUserServer;
 import com.leap.util.ValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -19,10 +19,10 @@ import javax.validation.Valid;
 @RequestMapping(value = "/leap/app/user")
 public class UserController {
 
-  private final UserService service;
+  private final IUserServer service;
 
   @Autowired
-  public UserController(UserService service) {
+  public UserController(IUserServer service) {
     this.service = service;
   }
 
