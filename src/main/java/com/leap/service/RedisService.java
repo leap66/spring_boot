@@ -1,6 +1,5 @@
 package com.leap.service;
 
-import com.google.gson.reflect.TypeToken;
 import com.leap.service.connect.IRedisServer;
 import com.leap.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +77,7 @@ public class RedisService implements IRedisServer {
   public <T> List<T> getList(String key, Class<T> clz) {
     String json = get(key);
     if (json != null) {
-      return GsonUtil.parse(json, new TypeToken<List<T>>() {
-      }.getType());
+      return GsonUtil.parseLst(json, clz);
     }
     return null;
   }

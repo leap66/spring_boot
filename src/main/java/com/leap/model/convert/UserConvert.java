@@ -1,7 +1,8 @@
-package com.leap.util;
+package com.leap.model.convert;
 
 import com.leap.model.User;
 import com.leap.model.out.OutUser;
+import com.leap.util.IsEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  * @time : 2017/9/8
  * @description :
  */
-public class ConvertUtil {
+public class UserConvert {
 
   // User convert OutUser
   public static OutUser UserToA(User user) {

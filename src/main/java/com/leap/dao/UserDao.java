@@ -56,7 +56,6 @@ public class UserDao {
   public User get(String id) throws BaseException {
     List<User> user = userRepository.findById(id);
     ValidUtil.valid(user, true, ExceptionEnum.DAO_EMPTY);
-    ValidUtil.valid(user.get(0).isNormal(), ExceptionEnum.DAO_NORMAL);
     return user.get(0);
   }
 
@@ -68,7 +67,6 @@ public class UserDao {
   public User findByMobile(String mobile) throws BaseException {
     List<User> user = userRepository.findByMobile(mobile);
     ValidUtil.valid(user, true, ExceptionEnum.DAO_EMPTY);
-    ValidUtil.valid(user.get(0).isNormal(), ExceptionEnum.DAO_NORMAL);
     return user.get(0);
   }
 

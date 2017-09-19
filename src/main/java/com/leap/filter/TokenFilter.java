@@ -76,6 +76,8 @@ public class TokenFilter implements HandlerInterceptor {
             break;
           }
         }
+      } else if (cookie.contains("jwt=")) {
+        requestToken = cookie.substring(5, cookie.length());
       }
     }
     return requestToken;

@@ -32,8 +32,6 @@ public enum ExceptionEnum implements Serializable {
   //
   DAO_ID_EXIST(365, "该数据已存在!"),
   //
-  DAO_NORMAL(366, "数据库查询无此数据!"),
-  //
   DAO_SECRET(367, "无操作权限!"),
 
   //

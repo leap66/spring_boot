@@ -61,7 +61,6 @@ public class AuthDao {
   public Auth findByMobile(String mobile) throws BaseException {
     List<Auth> authList = authRepository.findByMobile(mobile);
     ValidUtil.valid(authList, true, ExceptionEnum.DAO_MOBILE);
-    ValidUtil.valid(authList.get(0).isNormal(), ExceptionEnum.DAO_NORMAL);
     return authList.get(0);
   }
 
@@ -73,7 +72,6 @@ public class AuthDao {
   public Auth findById(String id) throws BaseException {
     List<Auth> authList = authRepository.findById(id);
     ValidUtil.valid(authList, true, ExceptionEnum.DAO_EMPTY);
-    ValidUtil.valid(authList.get(0).isNormal(), ExceptionEnum.DAO_NORMAL);
     return authList.get(0);
   }
 

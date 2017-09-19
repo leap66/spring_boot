@@ -2,9 +2,9 @@ package com.leap.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.leap.config.MarsConfig;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -26,8 +26,9 @@ public class GsonUtil {
   /**
    * 将json字符串转为 java列表对象
    */
-  synchronized public static <T> List<T> parse(String json, Type type) {
-    return instance.fromJson(json, type);
+  synchronized public static <T> List<T> parseLst(String json, Class<T> classOfT) {
+    return instance.fromJson(json, new TypeToken<List<T>>() {
+    }.getType());
   }
 
   /**

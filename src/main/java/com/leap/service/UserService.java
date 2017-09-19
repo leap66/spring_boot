@@ -5,7 +5,7 @@ import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.User;
 import com.leap.model.in.network.Response;
 import com.leap.service.connect.IUserServer;
-import com.leap.util.ConvertUtil;
+import com.leap.model.convert.UserConvert;
 import com.leap.util.IsEmpty;
 import com.leap.util.ResultUtil;
 import com.leap.util.ValidUtil;
@@ -59,19 +59,19 @@ public class UserService implements IUserServer {
     temp.setPhotoName(user.getPhotoName());
     temp.setPhotoUrl(user.getPhotoUrl());
     user = userDao.update(temp);
-    return ResultUtil.success(ConvertUtil.UserToA(user));
+    return ResultUtil.success(UserConvert.UserToA(user));
   }
 
   @Override
   public Response get(String id) {
     User user = userDao.get(id);
-    return ResultUtil.success(ConvertUtil.UserToA(user));
+    return ResultUtil.success(UserConvert.UserToA(user));
   }
 
   @Override
   public Response query() {
     List<User> userList = userDao.query();
-    return ResultUtil.success(ConvertUtil.UserListToA(userList), userList.size(), false);
+    return ResultUtil.success(UserConvert.UserListToA(userList), userList.size(), false);
   }
 
   @Override

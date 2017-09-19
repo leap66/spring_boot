@@ -19,4 +19,6 @@ public class MarsConfig {
   public static final long JWT_ttlMillis = 12 * 60 * 60 * 1000;
 
   public static final String TOKEN_ID = "marsRedisToken";
+
+  public static final String TU_LING_KEY = "eec85c378bec4dc9983ad98fda728f6e";
 }
