@@ -1,6 +1,7 @@
 package com.leap.service;
 
 import com.leap.cmp.TokenMgr;
+import com.leap.config.MarsConfig;
 import com.leap.dao.AuthDao;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
@@ -65,6 +66,7 @@ public class AuthService implements IAuthServer {
     String token = JwtUtil.created(temp.getId());
     TokenMgr.setToken(token);
     redisServer.set(RedisUtil.key(temp.getId()), token);
+    redisServer.expire(RedisUtil.key(temp.getId()), MarsConfig.JWT_ttlMillis);
     return ResultUtil.success(mobile);
   }
 

@@ -17,6 +17,6 @@ public class RedisUtil {
    * @return redis唯一码
    */
   public static String key(String key) {
-    return MarsConfig.TOKEN_ID + key;
+    return MarsConfig.REDIS_TOKEN_ID + key;
   }
 }

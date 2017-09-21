@@ -4,6 +4,8 @@ import com.leap.handle.exception.base.BaseException;
 import com.leap.model.in.network.Response;
 import com.leap.model.tuling.BChat;
 
+import java.io.IOException;
+
 /**
  * @author : ylwei
  * @time : 2017/9/18
@@ -20,7 +22,7 @@ public interface IChatServer {
    * @throws BaseException
    *           参数错误
    */
-  public Response chat(BChat chat) throws BaseException;
+  public Response chat(BChat chat) throws IOException;
 
   /**
    * 聊天

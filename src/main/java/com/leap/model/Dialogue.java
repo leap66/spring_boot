@@ -16,7 +16,7 @@ import java.util.Date;
 @Entity
 @JsonIgnoreProperties(value = {
     "hibernateLazyInitializer", "handler" })
-public class Dialogue implements Serializable{
+public class Dialogue implements Serializable {
 
   @Id
   @GeneratedValue
@@ -24,7 +24,6 @@ public class Dialogue implements Serializable{
   private String id;// 唯一标识符
   private String userId;// 用户标识符
   private boolean ask; // 判断是询问还是回答
-  private String keyId;// 用户标识符
   private String info;// 询问信息
   private String loc;// 地址
   private Date time;// 时间
@@ -33,6 +32,7 @@ public class Dialogue implements Serializable{
   private String url;// 链接地址
   private String list;// list
   private boolean normal;// 是否正常显示
+  private String voiceName;// 语音文件名
 
   public Dialogue() {
   }
@@ -67,14 +67,6 @@ public class Dialogue implements Serializable{
 
   public void setAsk(boolean ask) {
     this.ask = ask;
-  }
-
-  public String getKey() {
-    return keyId;
-  }
-
-  public void setKey(String key) {
-    this.keyId = key;
   }
 
   public String getInfo() {
@@ -139,5 +131,13 @@ public class Dialogue implements Serializable{
 
   public void setNormal(boolean normal) {
     this.normal = normal;
+  }
+
+  public String getVoiceName() {
+    return voiceName;
+  }
+
+  public void setVoiceName(String voiceName) {
+    this.voiceName = voiceName;
   }
 }

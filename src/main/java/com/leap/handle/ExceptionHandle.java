@@ -32,7 +32,8 @@ public class ExceptionHandle {
     ExceptionEnum exceptionEnum;
     if (e instanceof BaseException) {
       BaseException exception = (BaseException) e;
-      ServletUtil.getResponse().setStatus(exception.getCode());
+      ServletUtil.getResponse().setStatus(
+          (exception.getCode() > 500 || exception.getCode() < 100) ? 500 : exception.getCode());
       return ResultUtil.error(exception.getCode(), exception.getMsg(), e.toString(),
           e.getStackTrace()[0].toString());
     } else if (e instanceof HttpRequestMethodNotSupportedException) {

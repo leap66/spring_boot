@@ -1,6 +1,5 @@
 package com.leap.model.convert;
 
-import com.leap.config.MarsConfig;
 import com.leap.model.Dialogue;
 import com.leap.model.out.OutDialogue;
 import com.leap.model.tuling.BChat;
@@ -58,7 +57,6 @@ public class DialogueConvert {
     dialogue.setId(UUID.randomUUID().toString());
     dialogue.setUserId(chat.getUserid());
     dialogue.setCode(0);
-    dialogue.setKey(chat.getKey());
     dialogue.setInfo(chat.getInfo());
     dialogue.setLoc(chat.getLoc());
     dialogue.setTime(chat.getTime());
@@ -74,7 +72,6 @@ public class DialogueConvert {
     dialogue.setAsk(false);
     dialogue.setId(UUID.randomUUID().toString());
     dialogue.setUserId(chat.getUserId());
-    dialogue.setKey(MarsConfig.TU_LING_KEY);
     dialogue.setTime(chat.getTime());
     dialogue.setCode(chat.getCode());
     dialogue.setText(chat.getText());

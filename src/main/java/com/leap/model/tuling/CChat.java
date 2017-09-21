@@ -1,5 +1,7 @@
 package com.leap.model.tuling;
 
+import com.leap.model.out.base.BEntity;
+
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import java.util.List;
  * @time : 2017/9/18
  * @description :
  */
-public class CChat {
+public class CChat extends BEntity{
   private String userId;// 用户ID
   private Integer code;// 标识符
   private String text;// 结果

@@ -1,5 +1,7 @@
 package com.leap.model.tuling;
 
+import com.leap.model.baidu.BVoice;
+import com.leap.model.out.base.BEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -10,26 +12,17 @@ import java.util.Date;
  * @time : 2017/9/18
  * @description :
  */
-public class BChat {
+public class BChat extends BEntity {
 
-  private String key;// 请求Key
   @Length(min = 1, max = 32, message = "询问信息最长为32位！")
   @NotBlank(message = "询问信息不能为空！")
   private String info;// 询问信息
   private String loc;// 地址
-
   @Length(min = 1, max = 36, message = "用户ID最长为32位！")
   @NotBlank(message = "用户ID不能为空！")
   private String userid;// 用户ID
   private Date time;// 时间
-
-  public String getKey() {
-    return key;
-  }
-
-  public void setKey(String key) {
-    this.key = key;
-  }
+  private BVoice bUcn;
 
   public String getInfo() {
     return info;
@@ -61,5 +54,13 @@ public class BChat {
 
   public void setTime(Date time) {
     this.time = time;
+  }
+
+  public BVoice getbUcn() {
+    return bUcn;
+  }
+
+  public void setbUcn(BVoice bUcn) {
+    this.bUcn = bUcn;
   }
 }

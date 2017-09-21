@@ -1,11 +1,11 @@
-package com.leap.model.tuling;
+package com.leap.model.enums;
 
 /**
  * @author : ylwei
  * @time : 2017/9/18
  * @description :
  */
-public enum DialogueEnum {
+public enum TuLingCode {
 
   ASK_NORMAL(0, "成功"), //
   ERROR_KEY(40001, "参数key错误"), //
@@ -23,15 +23,15 @@ public enum DialogueEnum {
   private Integer code;
   private String message;
 
-  DialogueEnum(Integer code, String message) {
+  TuLingCode(Integer code, String message) {
     this.code = code;
     this.message = message;
   }
 
-  public static DialogueEnum getEnum(Integer code) {
-    for (DialogueEnum dialogueEnum : DialogueEnum.values()) {
-      if (dialogueEnum.code.equals(code)) {
-        return dialogueEnum;
+  public static TuLingCode getEnum(Integer param) {
+    for (TuLingCode code : TuLingCode.values()) {
+      if (code.code.equals(param)) {
+        return code;
       }
     }
     return null;

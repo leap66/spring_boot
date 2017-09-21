@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 /**
  * @author : ylwei
@@ -34,7 +35,7 @@ public class DialogueController {
    * @return Response
    */
   @PostMapping(value = "/chat")
-  public Response chat(@RequestBody @Valid BChat chat, BindingResult result) throws BaseException {
+  public Response chat(@RequestBody @Valid BChat chat, BindingResult result) throws IOException {
     ValidUtil.valid(result);
     return chatServer.chat(chat);
   }
