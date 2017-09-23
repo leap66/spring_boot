@@ -10,7 +10,7 @@ import com.leap.model.out.base.BEntity;
 public class BVoice extends BEntity {
 
   private String userId;
-  private Integer len;// 接收文件长度
+  private long len;// 接收文件长度
   private byte[] code;// 接收、返回File字节流
   private String info;// 接收、返回识别信息
   private String name;// 文件名
@@ -25,11 +25,11 @@ public class BVoice extends BEntity {
     this.userId = userId;
   }
 
-  public Integer getLen() {
+  public long getLen() {
     return len;
   }
 
-  public void setLen(Integer len) {
+  public void setLen(long len) {
     this.len = len;
   }
 

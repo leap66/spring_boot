@@ -1,5 +1,6 @@
 package com.leap.model.tuling;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leap.model.out.base.BEntity;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ public class CChat extends BEntity{
   private String text;// 结果
   private String url;// 链接地址
   private List<News> list;// 新闻链接
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date time;// 时间
 
   public String getUserId() {

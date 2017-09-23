@@ -1,5 +1,6 @@
 package com.leap.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
@@ -26,6 +27,7 @@ public class Dialogue implements Serializable {
   private boolean ask; // 判断是询问还是回答
   private String info;// 询问信息
   private String loc;// 地址
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date time;// 时间
   private Integer code;// 标识符
   private String text;// 结果
@@ -33,6 +35,7 @@ public class Dialogue implements Serializable {
   private String list;// list
   private boolean normal;// 是否正常显示
   private String voiceName;// 语音文件名
+  private long voiceLen;// 语音文件长度
 
   public Dialogue() {
   }
@@ -139,5 +142,13 @@ public class Dialogue implements Serializable {
 
   public void setVoiceName(String voiceName) {
     this.voiceName = voiceName;
+  }
+
+  public long getVoiceLen() {
+    return voiceLen;
+  }
+
+  public void setVoiceLen(long voiceLen) {
+    this.voiceLen = voiceLen;
   }
 }

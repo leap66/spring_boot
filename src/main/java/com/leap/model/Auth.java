@@ -1,5 +1,6 @@
 package com.leap.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -35,7 +36,9 @@ public class Auth {
   @Length(max = 256, message = "remark最长为256位！")
   private String remark;// 备注
   private String history;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date created;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date end;
   private boolean normal;// 正常账户,非解绑账户
 

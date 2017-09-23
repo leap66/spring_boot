@@ -7,7 +7,7 @@ import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.Auth;
 import com.leap.model.User;
-import com.leap.model.in.network.Response;
+import com.leap.model.out.Response;
 import com.leap.service.connect.IAuthServer;
 import com.leap.service.connect.IRedisServer;
 import com.leap.service.connect.IUserServer;
@@ -67,7 +67,7 @@ public class AuthService implements IAuthServer {
     TokenMgr.setToken(token);
     redisServer.set(RedisUtil.key(temp.getId()), token);
     redisServer.expire(RedisUtil.key(temp.getId()), MarsConfig.JWT_ttlMillis);
-    return ResultUtil.success(mobile);
+    return ResultUtil.success(temp.getId());
   }
 
   @Override

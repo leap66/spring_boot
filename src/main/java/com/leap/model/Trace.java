@@ -1,5 +1,6 @@
 package com.leap.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
@@ -32,7 +33,9 @@ public class Trace implements Serializable {
   private String Session;// Session
   private String response;// 返回参数
   private String throwable;// 崩溃信息
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date created;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date end;
   private boolean crash;// 崩溃
 

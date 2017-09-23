@@ -7,7 +7,7 @@ import com.leap.model.VoiceParam;
 import com.leap.model.baidu.BVoice;
 import com.leap.model.baidu.STts;
 import com.leap.model.convert.VoiceParamConvert;
-import com.leap.model.in.network.Response;
+import com.leap.model.out.Response;
 import com.leap.model.out.OutVoiceParam;
 import com.leap.network.HttpServlet;
 import com.leap.service.connect.ITtsServer;
@@ -55,6 +55,7 @@ public class TtsServer implements ITtsServer {
     VoiceParam param = convertGet(voice.getUserId());
     byte[] result = httpServlet.tts(param, getToken(), voice.getInfo());
     voice.setCode(result);
+    voice.setLen(result.length);
     return voice;
   }
 

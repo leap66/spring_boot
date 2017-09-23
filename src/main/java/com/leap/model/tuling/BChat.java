@@ -1,5 +1,6 @@
 package com.leap.model.tuling;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leap.model.baidu.BVoice;
 import com.leap.model.out.base.BEntity;
 import org.hibernate.validator.constraints.Length;
@@ -21,8 +22,9 @@ public class BChat extends BEntity {
   @Length(min = 1, max = 36, message = "用户ID最长为32位！")
   @NotBlank(message = "用户ID不能为空！")
   private String userid;// 用户ID
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date time;// 时间
-  private BVoice bUcn;
+  private BVoice voice;
 
   public String getInfo() {
     return info;
@@ -56,11 +58,11 @@ public class BChat extends BEntity {
     this.time = time;
   }
 
-  public BVoice getbUcn() {
-    return bUcn;
+  public BVoice getVoice() {
+    return voice;
   }
 
-  public void setbUcn(BVoice bUcn) {
-    this.bUcn = bUcn;
+  public void setVoice(BVoice voice) {
+    this.voice = voice;
   }
 }

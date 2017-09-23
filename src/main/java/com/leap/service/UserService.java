@@ -3,7 +3,7 @@ package com.leap.service;
 import com.leap.dao.UserDao;
 import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.User;
-import com.leap.model.in.network.Response;
+import com.leap.model.out.Response;
 import com.leap.service.connect.IUserServer;
 import com.leap.model.convert.UserConvert;
 import com.leap.util.IsEmpty;

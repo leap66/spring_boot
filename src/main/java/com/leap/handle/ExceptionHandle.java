@@ -1,5 +1,8 @@
 package com.leap.handle;
 
+import com.leap.model.enums.TtsCode;
+import com.leap.model.enums.TuLingCode;
+import com.leap.util.IsEmpty;
 import com.leap.util.ServletUtil;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -11,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
-import com.leap.model.in.network.Response;
+import com.leap.model.out.Response;
 import com.leap.util.LogUtil;
 import com.leap.util.ResultUtil;
 
@@ -32,10 +35,9 @@ public class ExceptionHandle {
     ExceptionEnum exceptionEnum;
     if (e instanceof BaseException) {
       BaseException exception = (BaseException) e;
-      ServletUtil.getResponse().setStatus(
-          (exception.getCode() > 500 || exception.getCode() < 100) ? 500 : exception.getCode());
+      ServletUtil.getResponse().setStatus(200);
       return ResultUtil.error(exception.getCode(), exception.getMsg(), e.toString(),
-          e.getStackTrace()[0].toString());
+          e.getStackTrace()[0].toString(), getMsg(exception.getCode()));
     } else if (e instanceof HttpRequestMethodNotSupportedException) {
       exceptionEnum = ExceptionEnum.REQUEST_METHOD;
     } else if (e instanceof HttpMediaTypeNotSupportedException) {
@@ -52,5 +54,13 @@ public class ExceptionHandle {
     ServletUtil.getResponse().setStatus(exceptionEnum.getCode());
     return ResultUtil.error(exceptionEnum.getCode(), exceptionEnum.getMsg(), e.toString(),
         e.getStackTrace()[0].toString());
+  }
+
+  private String getMsg(Integer code) {
+    TuLingCode enums = TuLingCode.getEnum(code);
+    if (!IsEmpty.object(enums))
+      return enums.getMessage();
+    return TtsCode.getEnum(code).getMessage();
+
   }
 }

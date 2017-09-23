@@ -2,6 +2,9 @@ package com.leap.model.convert;
 
 import com.leap.model.VoiceParam;
 import com.leap.model.out.OutVoiceParam;
+import com.leap.util.IsEmpty;
+
+import java.util.UUID;
 
 /**
  * @author : ylwei
@@ -13,7 +16,7 @@ public class VoiceParamConvert {
   // OutVoiceParam To VoiceParam
   public static VoiceParam paramToB(OutVoiceParam param) {
     VoiceParam temp = new VoiceParam();
-    temp.setId(param.getId());
+    temp.setId(IsEmpty.string(param.getId()) ? UUID.randomUUID().toString() : param.getId());
     temp.setUserId(param.getUserId());
     temp.setRate(param.getRate());
     temp.setSpd(param.getSpd());

@@ -4,7 +4,7 @@ import com.leap.config.MarsConfig;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.Auth;
-import com.leap.model.in.network.Response;
+import com.leap.model.out.Response;
 import com.leap.model.out.base.BUcn;
 import com.leap.service.connect.IAuthServer;
 import com.leap.service.connect.IRedisServer;

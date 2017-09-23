@@ -2,7 +2,7 @@ package com.leap.service.connect;
 
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.Auth;
-import com.leap.model.in.network.Response;
+import com.leap.model.out.Response;
 
 /**
  * @author : ylwei

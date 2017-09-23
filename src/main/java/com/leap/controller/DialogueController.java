@@ -2,7 +2,7 @@ package com.leap.controller;
 
 import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
-import com.leap.model.in.network.Response;
+import com.leap.model.out.Response;
 import com.leap.model.tuling.BChat;
 import com.leap.service.connect.IChatServer;
 import com.leap.util.ValidUtil;

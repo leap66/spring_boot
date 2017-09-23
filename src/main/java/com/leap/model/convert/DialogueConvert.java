@@ -34,6 +34,8 @@ public class DialogueConvert {
     outDialogue.setUrl(dialogue.getUrl());
     outDialogue.setAsk(dialogue.isAsk());
     outDialogue.setList(GsonUtil.parseLst(dialogue.getList(), News.class));
+    outDialogue.setVoiceName(dialogue.getVoiceName());
+    outDialogue.setVoiceLen(dialogue.getVoiceLen());
     return outDialogue;
   }
 
@@ -61,6 +63,10 @@ public class DialogueConvert {
     dialogue.setLoc(chat.getLoc());
     dialogue.setTime(chat.getTime());
     dialogue.setNormal(true);
+    if (!IsEmpty.object(chat.getVoice())) {
+      dialogue.setVoiceName(chat.getVoice().getName());
+      dialogue.setVoiceLen(chat.getVoice().getLen());
+    }
     return dialogue;
   }
 
@@ -76,6 +82,7 @@ public class DialogueConvert {
     dialogue.setCode(chat.getCode());
     dialogue.setText(chat.getText());
     dialogue.setUrl(chat.getUrl());
+    dialogue.setInfo(chat.getText());
     dialogue.setList(GsonUtil.toJson(chat.getList()));
     dialogue.setNormal(true);
     return dialogue;

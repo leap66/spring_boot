@@ -2,7 +2,7 @@ package com.leap.controller;
 
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.baidu.BVoice;
-import com.leap.model.in.network.Response;
+import com.leap.model.out.Response;
 import com.leap.model.out.OutVoiceParam;
 import com.leap.service.connect.ITtsServer;
 import com.leap.util.ValidUtil;
@@ -62,7 +62,7 @@ public class TtsController {
   }
 
   /**
-   * 百度 获取参数设置
+   * 百度 获取参数
    *
    * @return Response
    */

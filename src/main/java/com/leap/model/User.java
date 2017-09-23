@@ -1,5 +1,6 @@
 package com.leap.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -37,8 +38,11 @@ public class User implements Serializable {
   @Length(min = 10, max = 18, message = "身份证号不正确!")
   private String idCard;// 身份证号
   private boolean enabled;// 是否激活可以
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date birth;// 出生日期
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date created;// 用户创建时间
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date lastModified;// 用户最后修改时间
   private String remark;// 备注
   private Integer education;// 学历
