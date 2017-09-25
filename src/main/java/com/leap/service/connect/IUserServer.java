@@ -2,7 +2,8 @@ package com.leap.service.connect;
 
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.User;
-import com.leap.model.out.Response;
+
+import java.util.List;
 
 /**
  * @author : ylwei
@@ -14,28 +15,28 @@ public interface IUserServer {
   /**
    * 删除用户
    */
-  public void delete(String mobile) throws BaseException;
+  public boolean delete(String mobile) throws BaseException;
 
   /**
    * 更新用户
    *
-   * @return Response
+   * @return User
    */
-  public Response update(User user) throws BaseException;
+  public User update(User user) throws BaseException;
 
   /**
    * 查询用户-id
    *
-   * @return Response
+   * @return User
    */
-  public Response get(String id) throws BaseException;
+  public User get(String id) throws BaseException;
 
   /**
    * 查询所有用户
    *
-   * @return Response
+   * @return List<User>
    */
-  public Response query() throws BaseException;
+  public List<User> query() throws BaseException;
 
   /**
    * 新增用户

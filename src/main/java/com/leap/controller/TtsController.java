@@ -2,9 +2,11 @@ package com.leap.controller;
 
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.baidu.BVoice;
-import com.leap.model.out.Response;
+import com.leap.model.convert.VoiceParamConvert;
 import com.leap.model.out.OutVoiceParam;
+import com.leap.model.out.Response;
 import com.leap.service.connect.ITtsServer;
+import com.leap.util.ResultUtil;
 import com.leap.util.ValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -32,42 +34,46 @@ public class TtsController {
   /**
    * 百度翻译 文字转换为语音
    *
-   * @return Response
+   * @return BVoice
    */
   @PostMapping(value = "/tts")
   public Response chat(@RequestBody BVoice voice) throws IOException, BaseException {
-    return ttsServer.tts(voice);
+    BVoice temp = ttsServer.tts(voice);
+    return ResultUtil.success(temp);
   }
 
   /**
    * 百度翻译 语音转换为文字
    *
-   * @return Response
+   * @return BVoice
    */
   @PostMapping(value = "/vop")
   public Response vop(@RequestBody BVoice voice) throws IOException, BaseException {
-    return ttsServer.vop(voice);
+    BVoice temp = ttsServer.vop(voice);
+    return ResultUtil.success(temp);
   }
 
   /**
    * 百度 参数设置
    *
-   * @return Response
+   * @return OutVoiceParam
    */
   @PostMapping(value = "/param/edit")
   public Response edit(@RequestBody @Valid OutVoiceParam param, BindingResult result)
       throws BaseException {
     ValidUtil.valid(result);
-    return ttsServer.edit(param);
+    OutVoiceParam outVoiceParam = VoiceParamConvert.paramToA(ttsServer.edit(param));
+    return ResultUtil.success(outVoiceParam);
   }
 
   /**
    * 百度 获取参数
    *
-   * @return Response
+   * @return OutVoiceParam
    */
   @PostMapping(value = "/param/get")
   public Response edit(@RequestParam("id") String userId) throws BaseException {
-    return ttsServer.get(userId);
+    OutVoiceParam outVoiceParam = VoiceParamConvert.paramToA(ttsServer.get(userId));
+    return ResultUtil.success(outVoiceParam);
   }
 }

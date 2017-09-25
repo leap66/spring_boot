@@ -3,7 +3,6 @@ package com.leap.service.connect;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.VoiceParam;
 import com.leap.model.baidu.BVoice;
-import com.leap.model.out.Response;
 import com.leap.model.out.OutVoiceParam;
 
 import java.io.IOException;
@@ -20,29 +19,29 @@ public interface ITtsServer {
    *
    * @param voice
    *          入参
-   * @return Response
+   * @return BVoice
    * @throws BaseException
    *           参数错误
    */
-  public Response tts(BVoice voice) throws IOException, BaseException;
+  public BVoice tts(BVoice voice) throws IOException, BaseException;
 
   /**
    * 百度翻译 语音转换为文字
    *
    * @param voice
    *          入参
-   * @return Response
+   * @return BVoice
    * @throws BaseException
    *           参数错误
    */
-  public Response vop(BVoice voice) throws IOException, BaseException;
+  public BVoice vop(BVoice voice) throws IOException, BaseException;
 
   /**
    * 百度 文字转换为语音
    *
    * @param voice
    *          入参
-   * @return BUcn
+   * @return BVoice
    * @throws BaseException
    *           参数错误
    */
@@ -53,43 +52,32 @@ public interface ITtsServer {
    *
    * @param voice
    *          入参
-   * @return BUcn
+   * @return BVoice
    * @throws BaseException
    *           参数错误
    */
   public BVoice convertVop(BVoice voice) throws IOException, BaseException;
 
   /**
-   * 百度 参数获取
-   *
-   * @param userId
-   *          用户ID
-   * @return Response
-   * @throws BaseException
-   *           参数错误
-   */
-  public VoiceParam convertGet(String userId) throws BaseException;
-
-  /**
    * 百度 参数设置
    *
    * @param param
    *          入参
-   * @return Response
+   * @return VoiceParam
    * @throws BaseException
    *           参数错误
    */
-  public Response edit(OutVoiceParam param) throws BaseException;
+  public VoiceParam edit(OutVoiceParam param) throws BaseException;
 
   /**
    * 百度 参数获取
    *
    * @param userId
    *          用户ID
-   * @return Response
+   * @return VoiceParam
    * @throws BaseException
    *           参数错误
    */
-  public Response get(String userId) throws BaseException;
+  public VoiceParam get(String userId) throws BaseException;
 
 }

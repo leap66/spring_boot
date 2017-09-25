@@ -7,13 +7,11 @@ import com.leap.model.VoiceParam;
 import com.leap.model.baidu.BVoice;
 import com.leap.model.baidu.STts;
 import com.leap.model.convert.VoiceParamConvert;
-import com.leap.model.out.Response;
 import com.leap.model.out.OutVoiceParam;
 import com.leap.network.HttpServlet;
 import com.leap.service.connect.ITtsServer;
 import com.leap.util.GsonUtil;
 import com.leap.util.IsEmpty;
-import com.leap.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,19 +38,19 @@ public class TtsServer implements ITtsServer {
   }
 
   @Override
-  public Response tts(BVoice voice) throws IOException, BaseException {
-    return ResultUtil.success(convertTts(voice));
+  public BVoice tts(BVoice voice) throws IOException, BaseException {
+    return convertTts(voice);
   }
 
   @Override
-  public Response vop(BVoice voice) throws IOException, BaseException {
-    return ResultUtil.success(convertVop(voice));
+  public BVoice vop(BVoice voice) throws IOException, BaseException {
+    return convertVop(voice);
   }
 
   @Override
   public BVoice convertTts(BVoice voice) throws IOException, BaseException {
     voice.setAsk(true);
-    VoiceParam param = convertGet(voice.getUserId());
+    VoiceParam param = get(voice.getUserId());
     byte[] result = httpServlet.tts(param, getToken(), voice.getInfo());
     voice.setCode(result);
     voice.setLen(result.length);
@@ -61,7 +59,7 @@ public class TtsServer implements ITtsServer {
 
   @Override
   public BVoice convertVop(BVoice voice) throws IOException, BaseException {
-    VoiceParam param = convertGet(voice.getUserId());
+    VoiceParam param = get(voice.getUserId());
     String result = httpServlet.vop(param, getToken(), voice);
     STts tts = GsonUtil.parse(result, STts.class);
     if (tts.getErr_no().equals(0)) {
@@ -72,22 +70,16 @@ public class TtsServer implements ITtsServer {
   }
 
   @Override
-  public VoiceParam convertGet(String userId) throws BaseException {
+  public VoiceParam edit(OutVoiceParam param) throws BaseException {
+    return ttsDao.save(VoiceParamConvert.paramToB(param));
+  }
+
+  @Override
+  public VoiceParam get(String userId) throws BaseException {
     VoiceParam param = ttsDao.get(userId);
     if (!IsEmpty.object(param))
       return param;
     return getVoiceParam(userId);
-  }
-
-  @Override
-  public Response edit(OutVoiceParam param) throws BaseException {
-    VoiceParam temp = ttsDao.save(VoiceParamConvert.paramToB(param));
-    return ResultUtil.success(VoiceParamConvert.paramToA(temp));
-  }
-
-  @Override
-  public Response get(String userId) throws BaseException {
-    return ResultUtil.success(VoiceParamConvert.paramToA(convertGet(userId)));
   }
 
   // 根据userId获取语音参数

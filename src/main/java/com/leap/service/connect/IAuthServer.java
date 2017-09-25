@@ -2,7 +2,7 @@ package com.leap.service.connect;
 
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.Auth;
-import com.leap.model.out.Response;
+import com.leap.model.User;
 
 /**
  * @author : ylwei
@@ -14,56 +14,56 @@ public interface IAuthServer {
   /**
    * 注册
    *
-   * @return Response
+   * @return String
    */
-  public Response register(Auth auth) throws BaseException;
+  public String register(Auth auth) throws BaseException;
 
   /**
    * 登陆
    *
-   * @return Response
+   * @return User
    */
-  public Response login(String mobile, String password) throws BaseException;
+  public User login(String mobile, String password) throws BaseException;
+
+  /**
+   * 注销登陆
+   *
+   * @return boolean
+   */
+  public boolean logout(String id) throws BaseException;
 
   /**
    * 发送验证码
    *
-   * @return Response
+   * @return boolean
    */
-  public Response sendSms(String mobile, boolean exist) throws BaseException;
+  public boolean sendSms(String mobile, boolean exist) throws BaseException;
 
   /**
    * 校验验证码
    *
-   * @return Response
+   * @return boolean
    */
-  public Response checkSms(String mobile, String code) throws BaseException;
+  public boolean checkSms(String mobile, String code) throws BaseException;
 
   /**
    * 重置密码
    *
-   * @return Response
+   * @return boolean
    */
-  public Response pwdReset(String mobile, String password, String code) throws BaseException;
+  public boolean pwdReset(String mobile, String password, String code) throws BaseException;
 
   /**
    * 修改手机号
    *
    * @return Response
    */
-  public Response mobileReset(String mobile, String oldMobile, String code) throws BaseException;
-
-  /**
-   * 注销登陆
-   *
-   * @return Response
-   */
-  public Response logout(String id) throws BaseException;
+  public String mobileReset(String mobile, String oldMobile, String code) throws BaseException;
 
   /**
    * 删除
    */
-  public Response delete(String mobile) throws BaseException;
+  public boolean delete(String mobile) throws BaseException;
 
   /**
    * 查-ID

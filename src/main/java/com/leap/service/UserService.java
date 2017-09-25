@@ -3,11 +3,8 @@ package com.leap.service;
 import com.leap.dao.UserDao;
 import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.User;
-import com.leap.model.out.Response;
 import com.leap.service.connect.IUserServer;
-import com.leap.model.convert.UserConvert;
 import com.leap.util.IsEmpty;
-import com.leap.util.ResultUtil;
 import com.leap.util.ValidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +28,7 @@ public class UserService implements IUserServer {
   }
 
   @Override
-  public void delete(String mobile) {
+  public boolean delete(String mobile) {
     User user = userDao.findByMobile(mobile);
     user.setHistory(
         (IsEmpty.string(user.getHistory()) ? "" : user.getHistory()) + user.getMobile() + "&");
@@ -40,10 +37,11 @@ public class UserService implements IUserServer {
     user.setEnabled(false);
     user.setNormal(false);
     userDao.delete(user);
+    return true;
   }
 
   @Override
-  public Response update(User user) {
+  public User update(User user) {
     ValidUtil.valid(user.getId(), ExceptionEnum.DATA_EMPTY_ID);
     User temp = userDao.get(user.getId());
     ValidUtil.validDB(user.getVersion(), temp.getVersion());
@@ -58,20 +56,17 @@ public class UserService implements IUserServer {
     temp.setEducation(user.getEducation());
     temp.setPhotoName(user.getPhotoName());
     temp.setPhotoUrl(user.getPhotoUrl());
-    user = userDao.update(temp);
-    return ResultUtil.success(UserConvert.UserToA(user));
+    return userDao.update(temp);
   }
 
   @Override
-  public Response get(String id) {
-    User user = userDao.get(id);
-    return ResultUtil.success(UserConvert.UserToA(user));
+  public User get(String id) {
+    return userDao.get(id);
   }
 
   @Override
-  public Response query() {
-    List<User> userList = userDao.query();
-    return ResultUtil.success(UserConvert.UserListToA(userList), userList.size(), false);
+  public List<User> query() {
+    return userDao.query();
   }
 
   @Override

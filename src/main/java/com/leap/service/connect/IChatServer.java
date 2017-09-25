@@ -1,10 +1,11 @@
 package com.leap.service.connect;
 
 import com.leap.handle.exception.base.BaseException;
-import com.leap.model.out.Response;
+import com.leap.model.Dialogue;
 import com.leap.model.tuling.BChat;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author : ylwei
@@ -18,31 +19,31 @@ public interface IChatServer {
    * 
    * @param chat
    *          询问信息
-   * @return Response
+   * @return Dialogue
    * @throws BaseException
    *           参数错误
    */
-  public Response chat(BChat chat) throws IOException;
+  public Dialogue chat(BChat chat) throws IOException;
 
   /**
    * 聊天
    *
    * @param userId
    *          用户ID
-   * @return Response
+   * @return List<Dialogue>
    * @throws BaseException
    *           参数错误
    */
-  public Response query(String userId) throws BaseException;
+  public List<Dialogue> query(String userId) throws BaseException;
 
   /**
    * 聊天
    *
    * @param id
    *          信息ID
-   * @return Response
+   * @return boolean
    * @throws BaseException
    *           参数错误
    */
-  public Response delete(String id) throws BaseException;
+  public boolean delete(String id) throws BaseException;
 }

@@ -1,7 +1,6 @@
 package com.leap.util;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import com.leap.config.MarsConfig;
 
 import java.lang.reflect.Modifier;
@@ -24,16 +23,15 @@ public class GsonUtil {
   /**
    * 将json字符串转为 java对象
    */
-  synchronized public static <T> T parse(String json, Class<T> classOfT) {
+  synchronized public static <T> T parse(String json, Type classOfT) {
     return instance.fromJson(json, classOfT);
   }
 
   /**
    * 将json字符串转为 java列表对象
    */
-  synchronized public static <T> List<T> parseLst(String json, Class<T> classOfT) {
-    return instance.fromJson(json, new TypeToken<List<T>>() {
-    }.getType());
+  synchronized public static <T> List<T> parseLst(String json, Type classOfT) {
+    return instance.fromJson(json, classOfT);
   }
 
   /**

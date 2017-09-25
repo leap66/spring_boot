@@ -1,5 +1,6 @@
 package com.leap.model.convert;
 
+import com.google.gson.reflect.TypeToken;
 import com.leap.model.Dialogue;
 import com.leap.model.out.OutDialogue;
 import com.leap.model.tuling.BChat;
@@ -33,14 +34,15 @@ public class DialogueConvert {
     outDialogue.setText(dialogue.getText());
     outDialogue.setUrl(dialogue.getUrl());
     outDialogue.setAsk(dialogue.isAsk());
-    outDialogue.setList(GsonUtil.parseLst(dialogue.getList(), News.class));
+    outDialogue.setList(GsonUtil.parseLst(dialogue.getList(), new TypeToken<List<News>>() {
+    }.getType()));
     outDialogue.setVoiceName(dialogue.getVoiceName());
     outDialogue.setVoiceLen(dialogue.getVoiceLen());
     return outDialogue;
   }
 
   // List<Dialogue> convert List<OutDialogue>
-  public static List<OutDialogue> UserListToA(List<Dialogue> dialogueList) {
+  public static List<OutDialogue> ListToA(List<Dialogue> dialogueList) {
     List<OutDialogue> outDialogueList = new ArrayList<>();
     if (IsEmpty.object(dialogueList))
       return null;
