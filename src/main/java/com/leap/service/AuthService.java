@@ -65,10 +65,11 @@ public class AuthService implements IAuthServer {
     loginCheck(password, temp.getPassword());
     temp.setEnable(true);
     authDao.update(temp);
+    String tokenKey = RedisUtil.key(temp.getId());
     String token = JwtUtil.created(temp.getId());
     TokenMgr.setToken(token);
-    redisServer.set(RedisUtil.key(temp.getId()), token);
-    redisServer.expire(RedisUtil.key(temp.getId()), MarsConfig.JWT_ttlMillis);
+    redisServer.set(tokenKey, token);
+    redisServer.expire(tokenKey, MarsConfig.JWT_ttlMillis);
     return userService.get(temp.getId());
   }
 

@@ -12,7 +12,7 @@ public class CopyUtil {
     if (value == null) {
       return null;
     }
-    return GsonUtil.parse(value, (Class<T>) t.getClass());
+    return GsonUtil.parse(value, t.getClass());
   }
 
 }

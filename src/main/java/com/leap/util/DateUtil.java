@@ -11,15 +11,15 @@ import java.util.Locale;
  * @description :DateUtil
  */
 public class DateUtil {
-  public static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-  public static String DEFAULT_DATE_FORMAT_1 = "yyyy-MM-dd HH:mm";
-  public static String DEFAULT_DATE_FORMAT_2 = "yyyy/MM/dd";
-  public static String DEFAULT_DATE_FORMAT_3 = "yyyy-MM-dd";
-  public static String DEFAULT_DATE_FORMAT_4 = "yyyy/MM/dd HH:mm:ss";
-  public static String DEFAULT_DATE_FORMAT_5 = "yyyy/MM/dd EE";
-  public static String DEFAULT_DATE_FORMAT_6 = "yyyy年M月d日";
-  public static String DEFAULT_DATE_FORMAT_7 = "HH:mm";
-  public static String DEFAULT_DATE_FORMAT_8 = "yyyyMMdd HH:mm";
+  public static String DEFAULT_DATE_FORMAT_0 = "HH:mm";
+  public static String DEFAULT_DATE_FORMAT_1 = "yyyy/MM/dd";
+  public static String DEFAULT_DATE_FORMAT_2 = "yyyy-MM-dd";
+  public static String DEFAULT_DATE_FORMAT_3 = "yyyy年M月d日";
+  public static String DEFAULT_DATE_FORMAT_4 = "yyyy/MM/dd EE";
+  public static String DEFAULT_DATE_FORMAT_5 = "yyyy-MM-dd HH:mm";
+  public static String DEFAULT_DATE_FORMAT_6 = "yyyyMMdd HH:mm";
+  public static String DEFAULT_DATE_FORMAT_7 = "yyyy-MM-dd HH:mm:ss";
+  public static String DEFAULT_DATE_FORMAT_8 = "yyyy/MM/dd HH:mm:ss";
 
   public static String format(Date date, String format) {
     if (IsEmpty.object(date))

@@ -1,6 +1,6 @@
 package com.leap.filter;
 
-import com.leap.config.MarsConfig;
+import com.leap.cmp.TokenMgr;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.service.connect.IRedisServer;
@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,7 +33,7 @@ public class TokenFilter implements HandlerInterceptor {
   public boolean preHandle(HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse, Object o) throws Exception {
     try {
-      String userID = JwtUtil.parse(getToken(httpServletRequest));
+      String userID = TokenMgr.getCurrentUser(httpServletRequest);
       String token = redisService.get(RedisUtil.key(userID));
       if (!JwtUtil.parse(token).equals(userID))
         throw new BaseException(ExceptionEnum.TOKEN_EXPIRE);
@@ -53,33 +52,5 @@ public class TokenFilter implements HandlerInterceptor {
   @Override
   public void afterCompletion(HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-  }
-
-  /**
-   * 获取请求token
-   */
-  private String getToken(HttpServletRequest httpServletRequest) {
-    String requestToken = "";
-    for (Cookie cookie : httpServletRequest.getCookies()) {
-      if (MarsConfig.JWT_ID.equals(cookie.getName())) {
-        requestToken = cookie.getValue();
-        break;
-      }
-    }
-    if (requestToken.length() < 1) {
-      String cookie = httpServletRequest.getHeader("Cookie");
-      if (cookie.contains(";")) {
-        String[] cookies = cookie.split(";");
-        for (String temp : cookies) {
-          if (temp.contains("jwt=")) {
-            requestToken = temp.substring(5, temp.length());
-            break;
-          }
-        }
-      } else if (cookie.contains("jwt=")) {
-        requestToken = cookie.substring(5, cookie.length());
-      }
-    }
-    return requestToken;
   }
 }
