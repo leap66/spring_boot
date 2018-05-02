@@ -1,7 +1,7 @@
 package com.leap.model.convert;
 
 import com.leap.model.VoiceParam;
-import com.leap.model.out.OutVoiceParam;
+import com.leap.model.app.OutVoiceParam;
 import com.leap.util.IsEmpty;
 
 import java.util.UUID;

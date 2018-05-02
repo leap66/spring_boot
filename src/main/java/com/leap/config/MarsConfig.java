@@ -9,6 +9,7 @@ public class MarsConfig {
 
   // debug 模式
   public static final boolean debug = true;
+  private static final long DateTime = 24 * 60 * 60 * 1000;
 
   // 敏感操作，需要授权
   public static final boolean secret = true;
@@ -16,7 +17,7 @@ public class MarsConfig {
   // Token相关配置
   public static final String JWT_ID = "jwt";
   public static final String JWT_SECRET = "weiyaling@hd123.com";
-  public static final long JWT_ttlMillis = 12 * 60 * 60 * 1000;
+  public static final long JWT_ttlMillis = DateTime;
 
   // Redis相关配置
   public static final String REDIS_TOKEN_ID = "marsRedisToken";
@@ -28,7 +29,7 @@ public class MarsConfig {
 
   // 百度相关配置
   public static String BAI_DU_TOKEN;
-  public static final long BAI_DU_ttlMillis = 30 * 24 * 60 * 60 * 1000;
+  public static final long BAI_DU_ttlMillis = 30 * DateTime;
   public static final String BAI_DU_TOKEN_URL = "https://openapi.baidu.com/oauth/2.0/token";
   public static final String BAI_DU_VOP_URL = "http://vop.baidu.com/server_api";
   public static final String BAI_DU_TTS_URL = "http://tsn.baidu.com/text2audio";

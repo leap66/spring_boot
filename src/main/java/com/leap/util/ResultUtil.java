@@ -1,6 +1,6 @@
 package com.leap.util;
 
-import com.leap.model.out.Response;
+import com.leap.model.app.Response;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -2,7 +2,7 @@ package com.leap.model.tuling;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leap.model.baidu.BVoice;
-import com.leap.model.out.base.BEntity;
+import com.leap.model.app.base.BEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 

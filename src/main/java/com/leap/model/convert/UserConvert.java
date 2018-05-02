@@ -1,7 +1,7 @@
 package com.leap.model.convert;
 
 import com.leap.model.User;
-import com.leap.model.out.OutUser;
+import com.leap.model.app.OutUser;
 import com.leap.util.IsEmpty;
 
 import java.util.ArrayList;

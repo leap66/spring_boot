@@ -3,7 +3,7 @@ package com.leap.service.connect;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.VoiceParam;
 import com.leap.model.baidu.BVoice;
-import com.leap.model.out.OutVoiceParam;
+import com.leap.model.app.OutVoiceParam;
 
 import java.io.IOException;
 

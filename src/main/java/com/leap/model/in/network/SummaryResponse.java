@@ -1,6 +1,6 @@
 package com.leap.model.in.network;
 
-import com.leap.model.out.Response;
+import com.leap.model.app.Response;
 
 /**
  * @author  : ylwei

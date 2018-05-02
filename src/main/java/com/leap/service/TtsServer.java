@@ -7,7 +7,7 @@ import com.leap.model.VoiceParam;
 import com.leap.model.baidu.BVoice;
 import com.leap.model.baidu.STts;
 import com.leap.model.convert.VoiceParamConvert;
-import com.leap.model.out.OutVoiceParam;
+import com.leap.model.app.OutVoiceParam;
 import com.leap.network.HttpServlet;
 import com.leap.service.connect.ITtsServer;
 import com.leap.util.GsonUtil;

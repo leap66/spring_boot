@@ -2,7 +2,7 @@ package com.leap.model.convert;
 
 import com.google.gson.reflect.TypeToken;
 import com.leap.model.Dialogue;
-import com.leap.model.out.OutDialogue;
+import com.leap.model.app.OutDialogue;
 import com.leap.model.tuling.BChat;
 import com.leap.model.tuling.CChat;
 import com.leap.model.tuling.News;

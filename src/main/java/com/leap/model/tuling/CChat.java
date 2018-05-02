@@ -1,7 +1,7 @@
 package com.leap.model.tuling;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.leap.model.out.base.BEntity;
+import com.leap.model.app.base.BEntity;
 
 import java.util.Date;
 import java.util.List;

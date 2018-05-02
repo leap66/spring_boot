@@ -1,6 +1,6 @@
 package com.leap.model.baidu;
 
-import com.leap.model.out.base.BEntity;
+import com.leap.model.app.base.BEntity;
 
 /**
  * @author : ylwei

@@ -6,7 +6,7 @@ import com.leap.handle.exception.base.ExceptionEnum;
 import com.leap.model.Auth;
 import com.leap.model.User;
 import com.leap.model.convert.UserConvert;
-import com.leap.model.out.Response;
+import com.leap.model.app.Response;
 import com.leap.service.connect.IAuthServer;
 import com.leap.util.ResultUtil;
 import com.leap.util.ValidUtil;

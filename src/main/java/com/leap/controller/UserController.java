@@ -3,7 +3,7 @@ package com.leap.controller;
 import com.leap.handle.exception.base.BaseException;
 import com.leap.model.User;
 import com.leap.model.convert.UserConvert;
-import com.leap.model.out.Response;
+import com.leap.model.app.Response;
 import com.leap.service.connect.IUserServer;
 import com.leap.util.IsEmpty;
 import com.leap.util.ResultUtil;
